@@ -85,9 +85,11 @@ export default function FAQPage() {
     const searchParams = new URLSearchParams(window.location.search);
     const query = searchParams.get("search");
     if (query) {
-      setSearchQuery(query);
-      setActiveTab("All");
-      setExpandedId(null);
+      setTimeout(() => {
+        setSearchQuery(query);
+        setActiveTab("All");
+        setExpandedId(null);
+      }, 0);
     }
   }, []);
 

@@ -15,12 +15,14 @@ export default function TicketDetail() {
     const searchParams = new URLSearchParams(window.location.search);
     const idParam = searchParams.get("id");
 
-    if (idParam) {
-      const tickets = JSON.parse(localStorage.getItem("missu_tickets")) || [];
-      const foundTicket = tickets.find((t) => t.id === idParam);
-      setTicket(foundTicket);
-    }
-    setLoading(false);
+    setTimeout(() => {
+      if (idParam) {
+        const tickets = JSON.parse(localStorage.getItem("missu_tickets")) || [];
+        const foundTicket = tickets.find((t) => t.id === idParam);
+        setTicket(foundTicket);
+      }
+      setLoading(false);
+    }, 0);
   }, []);
 
   if (loading) {

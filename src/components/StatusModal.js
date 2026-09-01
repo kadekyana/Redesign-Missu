@@ -7,18 +7,6 @@ export default function StatusModal({ isOpen, onClose, initialQuery = "" }) {
   const [ticketId, setTicketId] = useState("");
   const [result, setResult] = useState(null);
 
-  useEffect(() => {
-    if (isOpen) {
-      if (initialQuery) {
-        setTicketId(initialQuery);
-        executeSearch(initialQuery);
-      } else {
-        setTicketId("");
-        setResult(null);
-      }
-    }
-  }, [isOpen, initialQuery]);
-
   const executeSearch = (query) => {
     if (!query) return;
     const tickets = JSON.parse(localStorage.getItem("missu_tickets")) || [];
@@ -32,6 +20,22 @@ export default function StatusModal({ isOpen, onClose, initialQuery = "" }) {
       setResult("not-found");
     }
   };
+
+  useEffect(() => {
+    if (isOpen) {
+      if (initialQuery) {
+        setTimeout(() => {
+          setTicketId(initialQuery);
+          executeSearch(initialQuery);
+        }, 0);
+      } else {
+        setTimeout(() => {
+          setTicketId("");
+          setResult(null);
+        }, 0);
+      }
+    }
+  }, [isOpen, initialQuery]);
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -126,7 +130,7 @@ export default function StatusModal({ isOpen, onClose, initialQuery = "" }) {
           {/* Area Hasil Pencarian */}
           {result === "not-found" && (
             <div className="mt-8 p-4 bg-red-50 text-red-600 rounded-lg text-center font-medium border border-red-100">
-              Tiket dengan ID "{ticketId}" tidak ditemukan.
+              Tiket dengan ID &quot;{ticketId}&quot; tidak ditemukan.
             </div>
           )}
 

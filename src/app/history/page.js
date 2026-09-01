@@ -4,6 +4,32 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
+const RatingScale = ({ questionIndex, value, onSelect }) => {
+  return (
+    <div className="relative flex justify-between items-center w-full px-1 py-4 mb-2">
+      <div className="absolute left-2 right-2 h-[2px] bg-black z-0"></div>
+      {[1, 2, 3, 4, 5].map((val) => {
+        const isSelected = value === val;
+        return (
+          <button
+            key={val}
+            type="button"
+            onClick={() => onSelect(questionIndex, val)}
+            className={`relative z-10 w-7 h-7 md:w-8 md:h-8 rounded-full flex items-center justify-center font-bold text-sm transition-all duration-200 border-2 
+              ${
+                isSelected
+                  ? "bg-[#62d26f] border-[#62d26f] text-gray-900 scale-110"
+                  : "bg-white border-[#c0cae3] text-gray-800 hover:border-gray-400"
+              }`}
+          >
+            {val}
+          </button>
+        );
+      })}
+    </div>
+  );
+};
+
 export default function HistoryPage() {
   const [tickets, setTickets] = useState([]);
 
@@ -24,9 +50,11 @@ export default function HistoryPage() {
   });
 
   useEffect(() => {
-    const savedTickets =
-      JSON.parse(localStorage.getItem("missu_tickets")) || [];
-    setTickets(savedTickets);
+    setTimeout(() => {
+      const savedTickets =
+        JSON.parse(localStorage.getItem("missu_tickets")) || [];
+      setTickets(savedTickets);
+    }, 0);
   }, []);
 
   const handleOpenDetail = (ticket) => {
@@ -38,6 +66,10 @@ export default function HistoryPage() {
     setSelectedSurveyId(ticketId);
     setSurveyAnswers({ q1: 0, q2: 0, q3: 0, saran: "" });
     setIsSurveyOpen(true);
+  };
+
+  const handleSelectRating = (questionIndex, val) => {
+    setSurveyAnswers((prev) => ({ ...prev, [questionIndex]: val }));
   };
 
   // LOGIKA UPDATE DINAMIS (Saat survey disubmit)
@@ -68,34 +100,6 @@ export default function HistoryPage() {
     setTimeout(() => {
       setIsSuccessOpen(false);
     }, 3000);
-  };
-
-  const RatingScale = ({ questionIndex }) => {
-    return (
-      <div className="relative flex justify-between items-center w-full px-1 py-4 mb-2">
-        <div className="absolute left-2 right-2 h-[2px] bg-black z-0"></div>
-        {[1, 2, 3, 4, 5].map((val) => {
-          const isSelected = surveyAnswers[questionIndex] === val;
-          return (
-            <button
-              key={val}
-              type="button"
-              onClick={() =>
-                setSurveyAnswers({ ...surveyAnswers, [questionIndex]: val })
-              }
-              className={`relative z-10 w-7 h-7 md:w-8 md:h-8 rounded-full flex items-center justify-center font-bold text-sm transition-all duration-200 border-2 
-                ${
-                  isSelected
-                    ? "bg-[#62d26f] border-[#62d26f] text-gray-900 scale-110"
-                    : "bg-white border-[#c0cae3] text-gray-800 hover:border-gray-400"
-                }`}
-            >
-              {val}
-            </button>
-          );
-        })}
-      </div>
-    );
   };
 
   return (
@@ -335,19 +339,31 @@ export default function HistoryPage() {
                   <h3 className="font-bold text-gray-900 text-sm md:text-base mb-2">
                     Bagaimana pengalaman Anda saat menggunakan layanan kami?
                   </h3>
-                  <RatingScale questionIndex="q1" />
+                  <RatingScale
+                    questionIndex="q1"
+                    value={surveyAnswers.q1}
+                    onSelect={handleSelectRating}
+                  />
                 </div>
                 <div>
                   <h3 className="font-bold text-gray-900 text-sm md:text-base mb-2">
                     Apakah Anda merasa mudah dalam mengakses layanan kami?
                   </h3>
-                  <RatingScale questionIndex="q2" />
+                  <RatingScale
+                    questionIndex="q2"
+                    value={surveyAnswers.q2}
+                    onSelect={handleSelectRating}
+                  />
                 </div>
                 <div>
                   <h3 className="font-bold text-gray-900 text-sm md:text-base mb-2">
                     Apakah informasi di platform ini mudah dimengerti?
                   </h3>
-                  <RatingScale questionIndex="q3" />
+                  <RatingScale
+                    questionIndex="q3"
+                    value={surveyAnswers.q3}
+                    onSelect={handleSelectRating}
+                  />
                 </div>
                 <div className="pt-2">
                   <h3 className="font-bold text-gray-900 text-sm md:text-base mb-3 border-b border-gray-200 pb-2">

@@ -8,12 +8,16 @@ export default function HistoryModal({ isOpen, onClose, initialQuery = "" }) {
 
   useEffect(() => {
     if (isOpen) {
-      const savedTickets =
-        JSON.parse(localStorage.getItem("missu_tickets")) || [];
-      setTickets(savedTickets);
-      setSearchQuery(initialQuery);
+      setTimeout(() => {
+        const savedTickets =
+          JSON.parse(localStorage.getItem("missu_tickets")) || [];
+        setTickets(savedTickets);
+        setSearchQuery(initialQuery);
+      }, 0);
     } else {
-      setSearchQuery("");
+      setTimeout(() => {
+        setSearchQuery("");
+      }, 0);
     }
   }, [isOpen, initialQuery]);
 

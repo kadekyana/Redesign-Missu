@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import HeroSection from "@/components/HeroSection";
 import StepsSection from "@/components/StepsSection";
@@ -13,6 +13,22 @@ export default function Home() {
   const [isTicketModalOpen, setIsTicketModalOpen] = useState(false);
   const [isWBModalOpen, setIsWBModalOpen] = useState(false);
   const router = useRouter();
+
+  useEffect(() => {
+    // Cek query parameter jika dinavigasi dari halaman lain via chatbot
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("createTicket") === "true") {
+      setTimeout(() => {
+        setIsTicketModalOpen(true);
+      }, 0);
+      window.history.replaceState({}, "", "/");
+    }
+
+    // Event listener untuk membuka modal tiket langsung dari chatbot
+    const handleOpenTicket = () => setIsTicketModalOpen(true);
+    window.addEventListener("missu:open-ticket", handleOpenTicket);
+    return () => window.removeEventListener("missu:open-ticket", handleOpenTicket);
+  }, []);
 
   const handleHeroSearch = (query) => {
     router.push(`/faq?search=${query}`);

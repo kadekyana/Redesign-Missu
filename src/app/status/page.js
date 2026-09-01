@@ -9,16 +9,6 @@ export default function StatusPage() {
   const [result, setResult] = useState(null);
   const [isNotFound, setIsNotFound] = useState(false);
 
-  // Mengecek apakah ada ID yang dikirim dari halaman Riwayat
-  useEffect(() => {
-    const searchParams = new URLSearchParams(window.location.search);
-    const idParam = searchParams.get("id");
-    if (idParam) {
-      setTicketId(idParam);
-      executeSearch(idParam);
-    }
-  }, []);
-
   const executeSearch = (query) => {
     if (!query) return;
     const tickets = JSON.parse(localStorage.getItem("missu_tickets")) || [];
@@ -34,6 +24,18 @@ export default function StatusPage() {
       setIsNotFound(true);
     }
   };
+
+  // Mengecek apakah ada ID yang dikirim dari halaman Riwayat
+  useEffect(() => {
+    const searchParams = new URLSearchParams(window.location.search);
+    const idParam = searchParams.get("id");
+    if (idParam) {
+      setTimeout(() => {
+        setTicketId(idParam);
+        executeSearch(idParam);
+      }, 0);
+    }
+  }, []);
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -131,7 +133,7 @@ export default function StatusPage() {
           {/* Not Found State */}
           {isNotFound && (
             <div className="mt-8 p-6 bg-red-50 text-red-600 rounded-xl text-center font-medium border border-red-100">
-              Tiket dengan ID "{ticketId}" tidak ditemukan.
+              Tiket dengan ID &quot;{ticketId}&quot; tidak ditemukan.
             </div>
           )}
 
