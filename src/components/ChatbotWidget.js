@@ -555,7 +555,7 @@ export default function ChatbotWidget() {
           {parts.map((part, pIdx) => {
             if (part.startsWith("**") && part.endsWith("**")) {
               return (
-                <strong key={pIdx} className="font-semibold text-gray-900">
+                <strong key={pIdx} className="font-semibold text-slate-900 dark:text-white">
                   {part.slice(2, -2)}
                 </strong>
               );
@@ -564,7 +564,7 @@ export default function ChatbotWidget() {
               return (
                 <code
                   key={pIdx}
-                  className="bg-blue-50 text-blue-800 px-1.5 py-0.5 rounded text-xs font-mono font-bold"
+                  className="bg-blue-50 dark:bg-blue-950/80 text-blue-800 dark:text-blue-300 border border-blue-200/60 dark:border-blue-800/60 px-1.5 py-0.5 rounded text-xs font-mono font-bold"
                 >
                   {part.slice(1, -1)}
                 </code>
@@ -586,7 +586,7 @@ export default function ChatbotWidget() {
           <div
             onMouseEnter={() => setShowTooltip(true)}
             onMouseLeave={() => setShowTooltip(false)}
-            className={`hidden sm:flex items-center bg-white text-gray-800 text-xs md:text-sm font-semibold px-4 py-2.5 rounded-full shadow-xl border border-gray-100 transition-all duration-300 transform ${
+            className={`hidden sm:flex items-center bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 text-xs md:text-sm font-semibold px-4 py-2.5 rounded-full shadow-xl border border-slate-100 dark:border-slate-700 transition-all duration-300 transform ${
               showTooltip || hasNewMessage
                 ? "opacity-100 translate-x-0"
                 : "opacity-0 translate-x-4 pointer-events-none"
@@ -641,14 +641,14 @@ export default function ChatbotWidget() {
           }
         >
           <div
-            className={`bg-white shadow-2xl flex flex-col overflow-hidden border border-gray-200/80 transition-all duration-300 ${
+            className={`bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 shadow-2xl flex flex-col overflow-hidden border border-slate-200/80 dark:border-slate-800 transition-all duration-300 ${
               isEnlarged
                 ? "w-full max-w-5xl h-[90vh] max-h-[850px] rounded-2xl sm:rounded-3xl"
                 : "w-full h-full rounded-2xl sm:rounded-3xl"
             }`}
           >
             {/* Header Chat */}
-            <div className="bg-gradient-to-r from-[#0d1a63] via-[#120F5B] to-[#201C99] text-white px-5 py-4 flex items-center justify-between shadow-md shrink-0">
+            <div className="bg-gradient-to-r from-[#0d1a63] via-[#120F5B] to-[#201C99] dark:from-[#080d22] dark:via-[#0f143a] dark:to-[#1a205a] text-white px-5 py-4 flex items-center justify-between shadow-md shrink-0 border-b border-transparent dark:border-slate-800">
               <div className="flex items-center gap-3">
                 <div className="relative w-10 h-10 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20 p-1.5 shrink-0">
                   <Image
@@ -772,9 +772,9 @@ export default function ChatbotWidget() {
             <div className="flex-1 flex overflow-hidden">
               {/* Kolom Kiri: Sidebar Bantuan Cepat (Hanya aktif saat diperbesar) */}
               {isEnlarged && (
-                <div className="w-80 bg-slate-50 border-r border-gray-200 p-5 hidden md:flex flex-col justify-between shrink-0 overflow-y-auto">
+                <div className="w-80 bg-slate-50 dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 p-5 hidden md:flex flex-col justify-between shrink-0 overflow-y-auto">
                   <div>
-                    <h4 className="text-xs font-bold uppercase tracking-wider text-gray-500 mb-3">
+                    <h4 className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-3">
                       Topik Bantuan Populer
                     </h4>
                     <div className="flex flex-col gap-2">
@@ -818,7 +818,7 @@ export default function ChatbotWidget() {
                         <button
                           key={idx}
                           onClick={() => handleSendMessage(item.query)}
-                          className="flex items-center gap-3 px-3.5 py-2.5 text-left rounded-xl bg-white border border-gray-200/70 hover:border-blue-500 hover:shadow-sm text-xs font-semibold text-gray-700 hover:text-blue-700 transition-all cursor-pointer group"
+                          className="flex items-center gap-3 px-3.5 py-2.5 text-left rounded-xl bg-white dark:bg-slate-800 border border-slate-200/70 dark:border-slate-700/80 hover:border-blue-500 dark:hover:border-blue-400 hover:shadow-xs text-xs font-semibold text-slate-700 dark:text-slate-200 hover:text-blue-700 dark:hover:text-blue-300 hover:bg-slate-50 dark:hover:bg-slate-750 transition-all cursor-pointer group"
                         >
                           <span className="text-base group-hover:scale-110 transition-transform">
                             {item.icon}
@@ -829,8 +829,8 @@ export default function ChatbotWidget() {
                     </div>
                   </div>
 
-                  <div className="mt-6 pt-4 border-t border-gray-200 text-[11px] text-gray-500 leading-relaxed">
-                    <p className="font-semibold text-gray-700 mb-1">
+                  <div className="mt-6 pt-4 border-t border-slate-200 dark:border-slate-800 text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed">
+                    <p className="font-semibold text-slate-700 dark:text-slate-300 mb-1">
                       MISSU Undiksha
                     </p>
                     Layanan resmi Manajemen Pengaduan & Informasi Sivitas
@@ -840,7 +840,7 @@ export default function ChatbotWidget() {
               )}
 
               {/* Area Utama Chat (Message Stream) */}
-              <div className="flex-1 flex flex-col h-full bg-slate-50/50 overflow-hidden">
+              <div className="flex-1 flex flex-col h-full bg-slate-50/50 dark:bg-slate-950/70 overflow-hidden">
                 {/* Scrollable Message List */}
                 <div className="flex-1 overflow-y-auto p-4 sm:p-5 space-y-4">
                   {messages.map((msg) => (
@@ -873,10 +873,10 @@ export default function ChatbotWidget() {
                         {/* Bubble Chat */}
                         <div>
                           <div
-                            className={`p-3.5 sm:p-4 rounded-2xl text-xs sm:text-sm leading-relaxed shadow-sm ${
+                            className={`p-3.5 sm:p-4 rounded-2xl text-xs sm:text-sm leading-relaxed shadow-xs ${
                               msg.sender === "user"
-                                ? "bg-gradient-to-r from-[#0d1a63] to-[#201c99] text-white rounded-tr-none"
-                                : "bg-white text-gray-800 border border-gray-100 rounded-tl-none"
+                                ? "bg-gradient-to-r from-[#0d1a63] to-[#201c99] dark:from-blue-700 dark:to-indigo-700 text-white rounded-tr-none"
+                                : "bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 border border-slate-200/80 dark:border-slate-700/80 rounded-tl-none"
                             }`}
                           >
                             {msg.sender === "bot"
@@ -893,7 +893,7 @@ export default function ChatbotWidget() {
                                   <button
                                     key={actIdx}
                                     onClick={() => handleActionClick(act)}
-                                    className="bg-white hover:bg-blue-50 border border-blue-200 text-blue-700 hover:text-blue-800 text-xs font-semibold px-3 py-1.5 rounded-lg shadow-2xs hover:shadow-xs transition-all flex items-center gap-1.5 cursor-pointer"
+                                    className="bg-white dark:bg-slate-800 hover:bg-blue-50 dark:hover:bg-slate-700 border border-blue-200 dark:border-slate-700 text-blue-700 dark:text-blue-300 hover:text-blue-800 dark:hover:text-blue-200 text-xs font-semibold px-3 py-1.5 rounded-lg shadow-xs hover:shadow-sm transition-all flex items-center gap-1.5 cursor-pointer"
                                   >
                                     <span>{act.label}</span>
                                     <svg
@@ -916,7 +916,7 @@ export default function ChatbotWidget() {
 
                           {/* Timestamp */}
                           <span
-                            className={`block text-[10px] text-gray-400 mt-1 px-1 ${
+                            className={`block text-[10px] text-slate-400 dark:text-slate-500 mt-1 px-1 ${
                               msg.sender === "user" ? "text-right" : "text-left"
                             }`}
                           >
@@ -930,7 +930,7 @@ export default function ChatbotWidget() {
                   {/* Indikator Sedang Mengetik */}
                   {isTyping && (
                     <div className="flex items-center gap-2.5">
-                      <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center p-1 shrink-0 border border-blue-200">
+                      <div className="w-8 h-8 rounded-full bg-blue-100 dark:bg-slate-800 flex items-center justify-center p-1 shrink-0 border border-blue-200 dark:border-slate-700">
                         <Image
                           src="/undiksha-logo.svg"
                           alt="Bot"
@@ -939,7 +939,7 @@ export default function ChatbotWidget() {
                           className="object-contain"
                         />
                       </div>
-                      <div className="bg-white border border-gray-100 px-4 py-3 rounded-2xl rounded-tl-none shadow-sm flex items-center gap-1.5">
+                      <div className="bg-white dark:bg-slate-800 border border-slate-200/80 dark:border-slate-700/80 px-4 py-3 rounded-2xl rounded-tl-none shadow-xs flex items-center gap-1.5">
                         <span className="w-2 h-2 rounded-full bg-blue-400 animate-bounce"></span>
                         <span
                           className="w-2 h-2 rounded-full bg-blue-500 animate-bounce"
@@ -957,15 +957,15 @@ export default function ChatbotWidget() {
                 </div>
 
                 {/* Pilihan Cepat (Suggestion Chips) */}
-                <div className="px-4 py-2 bg-white/80 border-t border-gray-100 backdrop-blur-sm flex items-center gap-2 overflow-x-auto no-scrollbar shrink-0">
-                  <span className="text-[11px] font-bold text-gray-400 shrink-0">
+                <div className="px-4 py-2.5 bg-white/90 dark:bg-slate-900/90 border-t border-slate-200/80 dark:border-slate-800 backdrop-blur-sm flex items-center gap-2 overflow-x-auto no-scrollbar shrink-0">
+                  <span className="text-[11px] font-bold text-slate-400 dark:text-slate-500 shrink-0">
                     Saran:
                   </span>
                   {DEFAULT_SUGGESTIONS.map((sug, idx) => (
                     <button
                       key={idx}
                       onClick={() => handleSendMessage(sug)}
-                      className="shrink-0 bg-gray-50 hover:bg-blue-50 hover:text-blue-700 hover:border-blue-300 border border-gray-200 text-gray-600 text-xs px-3 py-1.5 rounded-full transition-all cursor-pointer font-medium"
+                      className="shrink-0 bg-slate-50 dark:bg-slate-800 hover:bg-blue-50 dark:hover:bg-slate-700 hover:text-blue-700 dark:hover:text-blue-300 hover:border-blue-300 dark:hover:border-blue-500 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 text-xs px-3 py-1.5 rounded-full transition-all cursor-pointer font-medium"
                     >
                       {sug}
                     </button>
@@ -978,7 +978,7 @@ export default function ChatbotWidget() {
                     e.preventDefault();
                     handleSendMessage();
                   }}
-                  className="p-3 sm:p-4 bg-white border-t border-gray-100 flex items-center gap-2 shrink-0"
+                  className="p-3 sm:p-4 bg-white dark:bg-slate-900 border-t border-slate-200/80 dark:border-slate-800 flex items-center gap-2 shrink-0"
                 >
                   <input
                     ref={inputRef}
@@ -986,12 +986,12 @@ export default function ChatbotWidget() {
                     placeholder="Ketik pertanyaan atau ID Tiket..."
                     value={inputText}
                     onChange={(e) => setInputText(e.target.value)}
-                    className="flex-1 bg-gray-50 border border-gray-200 focus:border-blue-500 focus:bg-white focus:ring-2 focus:ring-blue-100 rounded-xl px-4 py-2.5 text-xs sm:text-sm text-gray-800 placeholder-gray-400 outline-none transition-all"
+                    className="flex-1 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:border-blue-500 dark:focus:border-blue-400 focus:bg-white dark:focus:bg-slate-800 focus:ring-2 focus:ring-blue-100 dark:focus:ring-blue-500/20 rounded-xl px-4 py-2.5 text-xs sm:text-sm text-slate-900 dark:text-white placeholder-slate-400 outline-none transition-all"
                   />
                   <button
                     type="submit"
                     disabled={!inputText.trim()}
-                    className="bg-blue-600 hover:bg-blue-700 disabled:opacity-40 text-white p-2.5 sm:px-4 sm:py-2.5 rounded-xl transition-all font-semibold flex items-center justify-center gap-1.5 shadow-sm cursor-pointer disabled:cursor-not-allowed"
+                    className="bg-blue-600 hover:bg-blue-500 active:scale-95 disabled:opacity-40 text-white p-2.5 sm:px-4 sm:py-2.5 rounded-xl transition-all font-semibold flex items-center justify-center gap-1.5 shadow-sm cursor-pointer disabled:cursor-not-allowed"
                     title="Kirim pesan"
                   >
                     <span className="hidden sm:inline text-xs">Kirim</span>

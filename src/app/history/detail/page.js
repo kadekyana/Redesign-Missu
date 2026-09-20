@@ -1,17 +1,16 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Image from "next/image";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 
-export default function TicketDetail() {
+export default function TicketDetailPage() {
   const [ticket, setTicket] = useState(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
-    // Ambil ID dari URL
     const searchParams = new URLSearchParams(window.location.search);
     const idParam = searchParams.get("id");
 
@@ -27,115 +26,128 @@ export default function TicketDetail() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#1c1c1c] flex items-center justify-center text-white">
-        Memuat data...
+      <div className="min-h-screen bg-slate-50 dark:bg-[#0b0f19] flex items-center justify-center text-slate-600 dark:text-slate-300 font-medium">
+        Memuat data tiket...
       </div>
     );
   }
 
-  // Jika tiket tidak ditemukan
   if (!ticket) {
     return (
-      <div className="min-h-screen bg-[#1c1c1c] flex flex-col items-center justify-center text-white">
-        <h1 className="text-2xl font-bold mb-4">Tiket Tidak Ditemukan</h1>
+      <div className="min-h-screen bg-slate-50 dark:bg-[#0b0f19] flex flex-col items-center justify-center text-slate-800 dark:text-slate-100 p-4">
+        <div className="w-16 h-16 rounded-full bg-red-100 dark:bg-red-950/60 text-red-500 flex items-center justify-center mb-4">
+          <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </div>
+        <h1 className="text-2xl font-bold mb-2">Tiket Tidak Ditemukan</h1>
+        <p className="text-slate-500 dark:text-slate-400 text-sm mb-6">
+          Nomor tiket yang Anda minta tidak terdaftar pada perangkat ini.
+        </p>
         <button
+          type="button"
           onClick={() => router.back()}
-          className="text-blue-400 hover:underline"
+          className="bg-blue-600 hover:bg-blue-500 text-white font-bold text-sm px-6 py-2.5 rounded-full transition-colors cursor-pointer"
         >
-          Kembali
+          Kembali ke Riwayat
         </button>
       </div>
     );
   }
 
   return (
-    // Background gelap menyesuaikan tema Figma (abu-abu sangat gelap)
-    <div className="min-h-screen bg-[#222222] font-sans flex items-center justify-center p-4 md:p-8">
-      {/* Container Putih Utama */}
-      <div className="bg-white w-full max-w-3xl min-h-[500px] shadow-2xl p-6 md:p-12 relative overflow-hidden">
-        {/* Header dengan Tombol Back */}
-        <div className="flex items-center justify-center relative mb-12 border-b border-gray-100 pb-6">
-          <button
-            onClick={() => router.back()}
-            className="absolute left-0 text-blue-600 hover:bg-blue-50 p-2 rounded-full transition-colors"
-          >
-            {/* Ikon Panah Kiri Besar */}
-            <svg
-              className="w-8 h-8"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M10 19l-7-7m0 0l7-7m-7 7h18"
-              />
-            </svg>
-          </button>
-          <h1 className="text-3xl font-extrabold text-gray-900 tracking-wide">
-            Status Tiket
-          </h1>
-        </div>
+    <div className="min-h-screen bg-slate-50 dark:bg-[#0b0f19] text-slate-900 dark:text-slate-100 font-sans flex flex-col transition-colors duration-200">
+      <Navbar />
 
-        {/* Informasi Utama Tiket */}
-        <div className="mb-12">
-          <h2 className="text-2xl md:text-[28px] font-extrabold text-gray-900 mb-3">
-            {ticket.judul}
-          </h2>
-          <p className="text-gray-400 text-base font-bold">
-            ID: <span className="text-blue-600">{ticket.id}</span>
-            <span className="mx-3 text-gray-300">•</span>
-            {ticket.tanggal}
-          </p>
-        </div>
-
-        {/* Timeline Status */}
-        <div className="flex items-start gap-4">
-          {/* Ikon Ceklis Biru */}
-          <div className="w-8 h-8 rounded-full bg-[#3b5998] flex items-center justify-center shrink-0 mt-1">
-            <svg
-              className="w-5 h-5 text-white"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
+      <main className="flex-grow flex items-center justify-center p-4 sm:p-8">
+        <div className="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 w-full max-w-3xl min-h-[500px] shadow-xl p-6 sm:p-12 relative overflow-hidden rounded-3xl transition-colors">
+          {/* Header dengan Tombol Back */}
+          <div className="flex items-center justify-between mb-8 border-b border-slate-100 dark:border-slate-800 pb-5">
+            <button
+              type="button"
+              onClick={() => router.back()}
+              className="text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-slate-800 p-2 rounded-xl transition-colors cursor-pointer"
+              title="Kembali"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={3}
-                d="M5 13l4 4L19 7"
-              />
-            </svg>
+              <svg
+                className="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2.5}
+                  d="M10 19l-7-7m0 0l7-7m-7 7h18"
+                />
+              </svg>
+            </button>
+            <h1 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white tracking-wide">
+              Detail Status Tiket
+            </h1>
+            <div className="w-8"></div>
           </div>
 
-          <div className="flex-1">
-            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-3">
-              <h3 className="font-semibold text-gray-900 text-[19px]">
-                Pembuatan Tiket Baru Berhasil
-              </h3>
-              {/* Waktu (Contoh Statis) */}
-              <span className="text-gray-400 text-sm font-medium mt-1 sm:mt-0">
-                30 Menit lalu
-              </span>
+          {/* Informasi Utama Tiket */}
+          <div className="mb-8">
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white mb-2 leading-snug">
+              {ticket.judul}
+            </h2>
+            <p className="text-slate-500 dark:text-slate-400 text-sm font-semibold">
+              ID: <strong className="font-mono text-blue-600 dark:text-blue-400">{ticket.id}</strong>
+              <span className="mx-2.5">•</span>
+              {ticket.tanggal} {ticket.waktu ? `(${ticket.waktu})` : ""}
+            </p>
+          </div>
+
+          {/* Timeline Status */}
+          <div className="flex items-start gap-4 p-5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/70 dark:border-slate-700/80 mb-6">
+            <div className="w-9 h-9 rounded-full bg-blue-600 text-white flex items-center justify-center shrink-0 mt-0.5 shadow-md shadow-blue-600/20">
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={3}
+                  d="M5 13l4 4L19 7"
+                />
+              </svg>
             </div>
 
-            {/* Badge Status */}
-            <span className="bg-[#fcf3d9] text-[#b88c1f] text-xs font-bold px-4 py-1.5 rounded-full inline-block border border-[#fde68a]">
-              {ticket.status}
-            </span>
+            <div className="flex-1">
+              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-2">
+                <h3 className="font-bold text-slate-900 dark:text-white text-base sm:text-lg">
+                  Pembuatan Tiket Baru Berhasil
+                </h3>
+                <span className="text-slate-400 text-xs font-medium">
+                  {ticket.waktu || "Tercatat"}
+                </span>
+              </div>
+
+              <span className="bg-amber-100 dark:bg-amber-950/80 text-amber-800 dark:text-amber-300 text-xs font-bold px-3.5 py-1 rounded-full inline-block border border-amber-300 dark:border-amber-800">
+                {ticket.status}
+              </span>
+            </div>
+          </div>
+
+          {/* Area Detail Tambahan */}
+          <div className="pt-4 border-t border-slate-100 dark:border-slate-800">
+            <h4 className="text-slate-900 dark:text-white font-bold text-sm mb-2">
+              Deskripsi Keluhan:
+            </h4>
+            <p className="text-slate-600 dark:text-slate-300 leading-relaxed text-sm bg-slate-50 dark:bg-slate-800/40 p-4 rounded-xl border border-slate-200/80 dark:border-slate-800">
+              {ticket.deskripsi}
+            </p>
           </div>
         </div>
+      </main>
 
-        {/* Area Detail Tambahan (Opsional) */}
-        <div className="mt-12 pt-8 border-t border-gray-100">
-          <h4 className="text-gray-900 font-bold mb-2">Deskripsi Keluhan:</h4>
-          <p className="text-gray-600 leading-relaxed text-sm">
-            {ticket.deskripsi}
-          </p>
-        </div>
-      </div>
+      <Footer />
     </div>
   );
 }

@@ -1,13 +1,14 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Image from "next/image";
 import Link from "next/link";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 
 const RatingScale = ({ questionIndex, value, onSelect }) => {
   return (
     <div className="relative flex justify-between items-center w-full px-1 py-4 mb-2">
-      <div className="absolute left-2 right-2 h-[2px] bg-black z-0"></div>
+      <div className="absolute left-2 right-2 h-[2px] bg-slate-200 dark:bg-slate-700 z-0"></div>
       {[1, 2, 3, 4, 5].map((val) => {
         const isSelected = value === val;
         return (
@@ -15,12 +16,11 @@ const RatingScale = ({ questionIndex, value, onSelect }) => {
             key={val}
             type="button"
             onClick={() => onSelect(questionIndex, val)}
-            className={`relative z-10 w-7 h-7 md:w-8 md:h-8 rounded-full flex items-center justify-center font-bold text-sm transition-all duration-200 border-2 
-              ${
-                isSelected
-                  ? "bg-[#62d26f] border-[#62d26f] text-gray-900 scale-110"
-                  : "bg-white border-[#c0cae3] text-gray-800 hover:border-gray-400"
-              }`}
+            className={`relative z-10 w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm transition-all duration-200 border-2 cursor-pointer ${
+              isSelected
+                ? "bg-emerald-500 border-emerald-500 text-white scale-110 shadow-md"
+                : "bg-white dark:bg-slate-800 border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200 hover:border-blue-500 hover:dark:border-blue-400"
+            }`}
           >
             {val}
           </button>
@@ -72,27 +72,22 @@ export default function HistoryPage() {
     setSurveyAnswers((prev) => ({ ...prev, [questionIndex]: val }));
   };
 
-  // LOGIKA UPDATE DINAMIS (Saat survey disubmit)
   const handleSubmitSurvey = (e) => {
     e.preventDefault();
 
-    // 1. Cari tiket yang dinilai, lalu ubah statusnya menjadi Done
     const updatedTickets = tickets.map((ticket) => {
       if (ticket.id === selectedSurveyId) {
         return {
           ...ticket,
-          status: "Done", // Ubah status secara dinamis
-          isRated: true, // Tandai bahwa sudah dinilai
-          surveyData: surveyAnswers, // Simpan nilai jika nanti dibutuhkan
+          status: "Done",
+          isRated: true,
+          surveyData: surveyAnswers,
         };
       }
       return ticket;
     });
 
-    // 2. Simpan kembali ke LocalStorage
     localStorage.setItem("missu_tickets", JSON.stringify(updatedTickets));
-
-    // 3. Update state agar UI langsung berubah tanpa perlu refresh page
     setTickets(updatedTickets);
 
     setIsSurveyOpen(false);
@@ -103,41 +98,41 @@ export default function HistoryPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 font-sans">
-      <div className="bg-[#0d1a63] w-full px-6 md:px-12 py-4 flex items-center gap-3">
-        <Link href="/" className="flex items-center gap-3">
-          <Image
-            src="/undiksha-logo.svg"
-            alt="Logo Undiksha"
-            width={36}
-            height={36}
-            className="object-contain"
-          />
-          <span className="text-white font-bold text-xl tracking-widest">
-            MISSU
-          </span>
-        </Link>
-      </div>
+    <div className="min-h-screen bg-slate-50 dark:bg-[#0b0f19] text-slate-900 dark:text-slate-100 font-sans flex flex-col transition-colors duration-200">
+      <Navbar />
 
-      <div className="max-w-4xl mx-auto px-4 py-8">
-        <div className="bg-white shadow-sm border border-gray-100 rounded-2xl p-6 md:p-10 min-h-[70vh]">
-          <h1 className="text-2xl md:text-3xl font-extrabold text-gray-900 mb-2 uppercase">
-            Riwayat Tiket
-          </h1>
-          <p className="text-gray-500 text-sm md:text-base mb-10">
-            Lihat riwayat tiket dan detail pengaduan Anda.
-          </p>
+      <main className="flex-grow max-w-4xl w-full mx-auto px-4 sm:px-6 py-10">
+        <div className="bg-white dark:bg-slate-900 shadow-sm border border-slate-200/80 dark:border-slate-800 rounded-3xl p-6 sm:p-10 min-h-[70vh] transition-colors">
+          <div className="mb-8">
+            <span className="text-xs sm:text-sm font-bold tracking-widest text-blue-600 dark:text-blue-400 uppercase mb-1 block">
+              Pengaduan Anda
+            </span>
+            <h1 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white uppercase tracking-tight">
+              Riwayat Tiket
+            </h1>
+            <p className="text-slate-600 dark:text-slate-300 text-sm sm:text-base mt-1">
+              Lihat riwayat tiket dan status penanganan pengaduan yang pernah Anda ajukan.
+            </p>
+          </div>
 
           {tickets.length === 0 ? (
-            <div className="text-center py-20 bg-gray-50 rounded-xl border border-dashed border-gray-300">
-              <p className="text-gray-500 font-medium">
+            <div className="text-center py-20 bg-slate-50 dark:bg-slate-800/40 rounded-2xl border border-dashed border-slate-300 dark:border-slate-700/80">
+              <div className="w-16 h-16 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-400 flex items-center justify-center mx-auto mb-4">
+                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+              </div>
+              <p className="text-slate-600 dark:text-slate-300 font-medium text-base mb-1">
                 Belum ada riwayat tiket pengaduan.
+              </p>
+              <p className="text-slate-400 text-xs sm:text-sm mb-4">
+                Ada kendala layanan? Buat tiket baru untuk mendapatkan bantuan.
               </p>
               <Link
                 href="/"
-                className="text-blue-600 hover:underline mt-2 inline-block text-sm"
+                className="bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs sm:text-sm px-5 py-2.5 rounded-full inline-flex items-center gap-1.5 transition-colors cursor-pointer shadow-md"
               >
-                Kembali ke Beranda
+                Buat Tiket Baru
               </Link>
             </div>
           ) : (
@@ -147,55 +142,63 @@ export default function HistoryPage() {
                   ticket.status.toLowerCase() === "done" ||
                   ticket.status.toLowerCase() === "selesai";
                 const badgeClass = isDone
-                  ? "bg-[#bbf7d0] text-[#166534]"
-                  : "bg-[#fef3c7] text-[#92400e]";
+                  ? "bg-emerald-100 dark:bg-emerald-950/80 text-emerald-800 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800"
+                  : "bg-amber-100 dark:bg-amber-950/80 text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-amber-800";
 
                 return (
                   <div
                     key={index}
-                    className="bg-white border border-gray-200 rounded-[16px] p-6 shadow-sm hover:shadow-md transition-shadow"
+                    className="bg-white dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/80 rounded-2xl p-6 shadow-xs hover:shadow-md hover:border-blue-300 dark:hover:border-blue-500/50 transition-all"
                   >
-                    <div className="flex justify-between items-start mb-2">
-                      <h3 className="font-bold text-xl text-gray-900 pr-4">
+                    <div className="flex flex-col sm:flex-row justify-between sm:items-start gap-2 mb-2">
+                      <h3 className="font-bold text-lg sm:text-xl text-slate-900 dark:text-white pr-4">
                         {ticket.judul}
                       </h3>
                       <span
-                        className={`px-5 py-1.5 rounded-full text-xs font-bold whitespace-nowrap ${badgeClass}`}
+                        className={`px-4 py-1 rounded-full text-xs font-bold uppercase tracking-wider whitespace-nowrap self-start sm:self-auto ${badgeClass}`}
                       >
                         {ticket.status}
                       </span>
                     </div>
 
-                    <p className="text-gray-400 text-sm font-semibold mb-6">
-                      ID: <span className="text-blue-600">{ticket.id}</span>
-                      <span className="mx-2 text-gray-300">•</span>
-                      {ticket.tanggal}
-                    </p>
+                    <div className="flex items-center gap-2 text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-medium mb-4">
+                      <span>ID: <strong className="font-mono text-blue-600 dark:text-blue-400">{ticket.id}</strong></span>
+                      <span>•</span>
+                      <span>{ticket.tanggal}</span>
+                      {ticket.kategori && (
+                        <>
+                          <span>•</span>
+                          <span className="bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 px-2 py-0.5 rounded text-[11px] font-semibold">{ticket.kategori}</span>
+                        </>
+                      )}
+                    </div>
 
-                    <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 border-t border-gray-100 pt-5">
-                      <p className="text-gray-600 text-sm font-bold flex-1 max-w-lg leading-relaxed">
+                    <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-5 border-t border-slate-100 dark:border-slate-700/60 pt-4">
+                      <p className="text-slate-600 dark:text-slate-300 text-sm leading-relaxed flex-1 max-w-lg font-normal line-clamp-2">
                         {ticket.deskripsi}
                       </p>
-                      <div className="flex flex-row gap-3 w-full md:w-auto">
+                      <div className="flex flex-row gap-2.5 w-full md:w-auto shrink-0">
                         <button
+                          type="button"
                           onClick={() => handleOpenDetail(ticket)}
-                          className="flex-1 md:flex-none text-center bg-[#295ce8] border border-[#295ce8] text-white font-bold text-sm px-6 py-2.5 rounded-full hover:bg-blue-700 transition-colors whitespace-nowrap"
+                          className="flex-1 md:flex-none text-center bg-blue-600 hover:bg-blue-500 active:scale-95 text-white font-bold text-xs sm:text-sm px-5 py-2.5 rounded-full transition-all whitespace-nowrap cursor-pointer shadow-xs"
                         >
                           Cek Detail
                         </button>
 
-                        {/* Jika sudah dinilai, ubah tombolnya. Jika belum, tampilkan tombol Beri Penilaian */}
                         {ticket.isRated ? (
                           <button
+                            type="button"
                             disabled
-                            className="flex-1 md:flex-none font-bold text-sm px-6 py-2.5 rounded-full border bg-gray-100 text-gray-400 cursor-not-allowed whitespace-nowrap"
+                            className="flex-1 md:flex-none font-bold text-xs sm:text-sm px-5 py-2.5 rounded-full border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-500 cursor-not-allowed whitespace-nowrap"
                           >
                             Sudah Dinilai
                           </button>
                         ) : (
                           <button
+                            type="button"
                             onClick={() => handleOpenSurvey(ticket.id)}
-                            className="flex-1 md:flex-none font-bold text-sm px-6 py-2.5 rounded-full border transition-colors whitespace-nowrap bg-[#fcd34d] border-[#fcd34d] text-gray-900 hover:bg-[#fbbf24]"
+                            className="flex-1 md:flex-none font-bold text-xs sm:text-sm px-5 py-2.5 rounded-full border transition-all whitespace-nowrap bg-amber-400 border-amber-400 text-slate-950 hover:bg-amber-300 active:scale-95 cursor-pointer shadow-xs"
                           >
                             Beri Penilaian
                           </button>
@@ -208,21 +211,21 @@ export default function HistoryPage() {
             </div>
           )}
         </div>
-      </div>
+      </main>
 
-      {/* ========================================= */}
-      {/* MODAL 0: DETAIL TIKET (Dinamis) */}
-      {/* ========================================= */}
+      {/* MODAL 0: DETAIL TIKET */}
       {isDetailOpen && detailTicket && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#222222]/90 backdrop-blur-sm">
-          <div className="bg-white w-full max-w-3xl min-h-[500px] shadow-2xl p-6 md:p-12 relative overflow-hidden rounded-xl animate-in fade-in zoom-in duration-200">
-            <div className="flex items-center justify-center relative mb-12 border-b border-gray-100 pb-6">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 w-full max-w-3xl max-h-[85vh] shadow-2xl p-6 sm:p-10 relative overflow-y-auto rounded-3xl animate-in zoom-in-95 duration-200 text-slate-800 dark:text-slate-100">
+            <div className="flex items-center justify-between mb-8 border-b border-slate-100 dark:border-slate-800 pb-4">
               <button
+                type="button"
                 onClick={() => setIsDetailOpen(false)}
-                className="absolute left-0 text-blue-600 hover:bg-blue-50 p-2 rounded-full transition-colors"
+                className="text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-slate-800 p-2 rounded-full transition-colors cursor-pointer"
+                title="Kembali"
               >
                 <svg
-                  className="w-8 h-8"
+                  className="w-6 h-6"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -230,33 +233,36 @@ export default function HistoryPage() {
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    strokeWidth={2}
+                    strokeWidth={2.5}
                     d="M10 19l-7-7m0 0l7-7m-7 7h18"
                   />
                 </svg>
               </button>
-              <h1 className="text-3xl font-extrabold text-gray-900 tracking-wide">
-                Status Tiket
-              </h1>
+              <h2 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white tracking-wide">
+                Detail Tiket Pengaduan
+              </h2>
+              <div className="w-8"></div>
             </div>
 
-            <div className="mb-12">
-              <h2 className="text-2xl md:text-[28px] font-extrabold text-gray-900 mb-3">
+            <div className="mb-8">
+              <h3 className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white mb-2">
                 {detailTicket.judul}
-              </h2>
-              <p className="text-gray-400 text-base font-bold">
-                ID: <span className="text-blue-600">{detailTicket.id}</span>
-                <span className="mx-3 text-gray-300">•</span>
-                {detailTicket.tanggal}
+              </h3>
+              <p className="text-slate-500 dark:text-slate-300 text-sm font-medium">
+                ID: <strong className="font-mono text-blue-600 dark:text-blue-400">{detailTicket.id}</strong>
+                <span className="mx-2">•</span>
+                {detailTicket.tanggal} {detailTicket.waktu ? `(${detailTicket.waktu})` : ""}
               </p>
             </div>
 
-            <div className="flex items-start gap-4">
+            <div className="flex items-start gap-4 p-5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/70 dark:border-slate-700/80 mb-6">
               <div
-                className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 mt-1 ${detailTicket.status === "Done" ? "bg-green-500" : "bg-[#3b5998]"}`}
+                className={`w-9 h-9 rounded-full flex items-center justify-center shrink-0 mt-0.5 text-white ${
+                  detailTicket.status === "Done" ? "bg-emerald-500" : "bg-blue-600"
+                }`}
               >
                 <svg
-                  className="w-5 h-5 text-white"
+                  className="w-5 h-5"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -270,53 +276,69 @@ export default function HistoryPage() {
                 </svg>
               </div>
               <div className="flex-1">
-                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-3">
-                  <h3 className="font-semibold text-gray-900 text-[19px]">
+                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-2">
+                  <h4 className="font-bold text-slate-900 dark:text-white text-base sm:text-lg">
                     {detailTicket.status === "Done"
                       ? "Tiket Telah Selesai Ditangani"
                       : "Pembuatan Tiket Baru Berhasil"}
-                  </h3>
-                  {/* WAKTU DINAMIS DARI LOCAL STORAGE */}
-                  <span className="text-gray-400 text-sm font-medium mt-1 sm:mt-0">
-                    {detailTicket.waktu || "Baru saja"}
+                  </h4>
+                  <span className="text-slate-400 text-xs font-medium">
+                    {detailTicket.waktu || "Tercatat"}
                   </span>
                 </div>
                 <span
-                  className={`text-xs font-bold px-4 py-1.5 rounded-full inline-block border ${detailTicket.status === "Done" ? "bg-[#bbf7d0] text-[#166534] border-[#86efac]" : "bg-[#fcf3d9] text-[#b88c1f] border-[#fde68a]"}`}
+                  className={`text-xs font-bold px-3.5 py-1 rounded-full inline-block border ${
+                    detailTicket.status === "Done"
+                      ? "bg-emerald-100 dark:bg-emerald-950/80 text-emerald-800 dark:text-emerald-300 border-emerald-300 dark:border-emerald-800"
+                      : "bg-amber-100 dark:bg-amber-950/80 text-amber-800 dark:text-amber-300 border-amber-300 dark:border-amber-800"
+                  }`}
                 >
-                  {detailTicket.status}
+                  Status: {detailTicket.status}
                 </span>
               </div>
             </div>
 
-            <div className="mt-12 pt-8 border-t border-gray-100">
-              <h4 className="text-gray-900 font-bold mb-2">
-                Deskripsi Keluhan:
-              </h4>
-              <p className="text-gray-600 leading-relaxed text-sm">
-                {detailTicket.deskripsi}
-              </p>
+            <div className="space-y-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+                <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200 dark:border-slate-800">
+                  <span className="text-xs text-slate-400 block mb-0.5 font-bold uppercase">Kategori</span>
+                  <span className="font-semibold text-slate-800 dark:text-slate-200">{detailTicket.kategori || "Umum"}</span>
+                </div>
+                <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200 dark:border-slate-800">
+                  <span className="text-xs text-slate-400 block mb-0.5 font-bold uppercase">Unit Tujuan</span>
+                  <span className="font-semibold text-slate-800 dark:text-slate-200">{detailTicket.unit || "UPA TIK"}</span>
+                </div>
+              </div>
+
+              <div className="pt-2">
+                <h4 className="text-slate-900 dark:text-white font-bold text-sm mb-1.5">
+                  Deskripsi Keluhan:
+                </h4>
+                <p className="text-slate-600 dark:text-slate-300 leading-relaxed text-sm bg-slate-50 dark:bg-slate-800/40 p-4 rounded-xl border border-slate-200 dark:border-slate-800">
+                  {detailTicket.deskripsi}
+                </p>
+              </div>
             </div>
           </div>
         </div>
       )}
 
-      {/* ========================================= */}
       {/* MODAL 1: FORM SURVEY KEPUASAN */}
-      {/* ========================================= */}
       {isSurveyOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-          <div className="bg-white w-full max-w-2xl max-h-[90vh] rounded-xl flex flex-col overflow-hidden shadow-2xl animate-in fade-in zoom-in duration-200">
-            <div className="flex justify-between items-center p-6 border-b border-gray-200">
-              <h2 className="text-xl md:text-2xl font-extrabold text-gray-900 uppercase">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 w-full max-w-2xl max-h-[90vh] rounded-3xl flex flex-col overflow-hidden shadow-2xl animate-in zoom-in-95 duration-200 text-slate-800 dark:text-slate-100">
+            <div className="flex justify-between items-center px-6 sm:px-8 py-5 border-b border-slate-100 dark:border-slate-800/80 bg-slate-50/50 dark:bg-slate-900">
+              <h2 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white uppercase tracking-tight">
                 FORM SURVEY KEPUASAN
               </h2>
               <button
+                type="button"
                 onClick={() => setIsSurveyOpen(false)}
-                className="text-gray-400 hover:text-red-500"
+                aria-label="Tutup survey"
+                className="text-slate-400 hover:text-red-500 dark:hover:text-red-400 p-1.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer"
               >
                 <svg
-                  className="w-8 h-8"
+                  className="w-6 h-6"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -324,20 +346,20 @@ export default function HistoryPage() {
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    strokeWidth={1.5}
-                    d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
                   />
                 </svg>
               </button>
             </div>
-            <div className="p-6 md:p-8 overflow-y-auto flex-1">
+            <div className="p-6 sm:p-8 overflow-y-auto flex-1">
               <form
                 onSubmit={handleSubmitSurvey}
                 className="flex flex-col gap-6"
               >
                 <div>
-                  <h3 className="font-bold text-gray-900 text-sm md:text-base mb-2">
-                    Bagaimana pengalaman Anda saat menggunakan layanan kami?
+                  <h3 className="font-bold text-slate-900 dark:text-white text-sm sm:text-base mb-1.5">
+                    1. Bagaimana pengalaman Anda saat menggunakan layanan kami?
                   </h3>
                   <RatingScale
                     questionIndex="q1"
@@ -346,8 +368,8 @@ export default function HistoryPage() {
                   />
                 </div>
                 <div>
-                  <h3 className="font-bold text-gray-900 text-sm md:text-base mb-2">
-                    Apakah Anda merasa mudah dalam mengakses layanan kami?
+                  <h3 className="font-bold text-slate-900 dark:text-white text-sm sm:text-base mb-1.5">
+                    2. Apakah Anda merasa mudah dalam mengakses layanan pengaduan?
                   </h3>
                   <RatingScale
                     questionIndex="q2"
@@ -356,8 +378,8 @@ export default function HistoryPage() {
                   />
                 </div>
                 <div>
-                  <h3 className="font-bold text-gray-900 text-sm md:text-base mb-2">
-                    Apakah informasi di platform ini mudah dimengerti?
+                  <h3 className="font-bold text-slate-900 dark:text-white text-sm sm:text-base mb-1.5">
+                    3. Apakah informasi dan solusi yang diberikan memuaskan?
                   </h3>
                   <RatingScale
                     questionIndex="q3"
@@ -366,8 +388,8 @@ export default function HistoryPage() {
                   />
                 </div>
                 <div className="pt-2">
-                  <h3 className="font-bold text-gray-900 text-sm md:text-base mb-3 border-b border-gray-200 pb-2">
-                    Kritik dan Saran
+                  <h3 className="font-bold text-slate-900 dark:text-white text-sm sm:text-base mb-2">
+                    Kritik dan Saran:
                   </h3>
                   <textarea
                     value={surveyAnswers.saran}
@@ -378,15 +400,15 @@ export default function HistoryPage() {
                       })
                     }
                     rows="3"
-                    className="w-full bg-[#eeeeee] border-none rounded-sm p-4 outline-none focus:ring-2 focus:ring-[#295ce8] text-gray-800 text-sm resize-none"
-                    placeholder="Tingkatkan kembali! Terimakasih atas bantuannya."
+                    className="w-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-3.5 outline-none focus:ring-2 focus:ring-blue-500 text-slate-900 dark:text-white text-sm resize-none placeholder-slate-400"
+                    placeholder="Tuliskan masukan atau saran Anda di sini..."
                     required
                   ></textarea>
                 </div>
-                <div className="flex justify-end mt-2">
+                <div className="flex justify-end pt-2">
                   <button
                     type="submit"
-                    className="bg-[#295ce8] text-white font-bold px-8 py-3 rounded-lg hover:bg-blue-700 transition-colors"
+                    className="bg-blue-600 hover:bg-blue-500 active:scale-95 text-white font-bold px-8 py-3 rounded-full transition-all cursor-pointer shadow-lg shadow-blue-600/30 text-sm"
                   >
                     Kirim Survey
                   </button>
@@ -397,15 +419,13 @@ export default function HistoryPage() {
         </div>
       )}
 
-      {/* ========================================= */}
       {/* MODAL 2: NOTIFIKASI SUKSES SURVEY */}
-      {/* ========================================= */}
       {isSuccessOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-          <div className="bg-white w-full max-w-lg rounded-xl p-10 md:p-14 flex flex-col items-center justify-center shadow-2xl animate-in fade-in zoom-in duration-200">
-            <div className="w-28 h-28 bg-[#62d26f] rounded-full flex items-center justify-center mb-8 shadow-lg shadow-green-500/20">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 w-full max-w-md rounded-3xl p-10 md:p-12 flex flex-col items-center justify-center shadow-2xl animate-in zoom-in-95 duration-200 text-slate-800 dark:text-slate-100">
+            <div className="w-20 h-20 bg-emerald-500 rounded-full flex items-center justify-center mb-6 shadow-xl shadow-emerald-500/30 animate-bounce">
               <svg
-                className="w-16 h-16 text-white"
+                className="w-10 h-10 text-white"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -413,20 +433,22 @@ export default function HistoryPage() {
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  strokeWidth={4}
+                  strokeWidth={3}
                   d="M5 13l4 4L19 7"
                 />
               </svg>
             </div>
-            <h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-2 uppercase text-center">
-              TERIMAKASIH!
+            <h2 className="text-2xl font-black text-slate-900 dark:text-white mb-2 uppercase text-center">
+              TERIMA KASIH!
             </h2>
-            <h3 className="text-xl md:text-2xl font-bold text-gray-900 uppercase text-center">
-              ANDA TELAH MENGISI SURVEY.
-            </h3>
+            <p className="text-slate-600 dark:text-slate-300 font-medium text-center text-sm sm:text-base">
+              Survei kepuasan Anda telah berhasil kami simpan dan status tiket diperbarui.
+            </p>
           </div>
         </div>
       )}
+
+      <Footer />
     </div>
   );
 }

@@ -26,11 +26,14 @@ export default function TicketModal({ isOpen, onClose }) {
     // 1. Buat format data tiket baru dengan WAKTU DINAMIS
     const now = new Date();
     const newTicket = {
-      id: `TKT-${Math.floor(Math.random() * 10000)}`,
+      id: `TKT-${Math.floor(1000 + Math.random() * 9000)}`,
       ...formData,
       status: "Open", // Status default
-      tanggal: now.toLocaleDateString("id-ID"),
-      // Tambahan: Catat jam pembuatan
+      tanggal: now.toLocaleDateString("id-ID", {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      }),
       waktu:
         now.toLocaleTimeString("id-ID", {
           hour: "2-digit",
@@ -67,17 +70,27 @@ export default function TicketModal({ isOpen, onClose }) {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-      <div className="bg-white rounded-2xl w-full max-w-2xl overflow-hidden shadow-2xl animate-in fade-in zoom-in duration-200">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-in fade-in duration-200">
+      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl w-full max-w-2xl overflow-hidden shadow-2xl animate-in zoom-in-95 duration-200 text-slate-800 dark:text-slate-100">
         {!isSuccess ? (
           <>
-            <div className="flex justify-between items-center p-4 sm:p-6 border-b border-gray-100">
-              <h2 className="text-xl font-bold text-gray-800">
-                Form Buka Tiket Pengaduan
-              </h2>
+            {/* Header Modal */}
+            <div className="flex justify-between items-center px-6 py-5 border-b border-slate-100 dark:border-slate-800/80 bg-slate-50/50 dark:bg-slate-900">
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-xl bg-blue-500/10 dark:bg-blue-400/10 text-blue-600 dark:text-blue-400 flex items-center justify-center font-bold">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                  </svg>
+                </div>
+                <h2 className="text-xl font-black text-slate-900 dark:text-white">
+                  Form Buka Tiket Pengaduan
+                </h2>
+              </div>
               <button
+                type="button"
                 onClick={handleClose}
-                className="text-gray-400 hover:text-red-500 transition-colors"
+                aria-label="Tutup form"
+                className="text-slate-400 hover:text-red-500 dark:hover:text-red-400 p-1 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer"
               >
                 <svg
                   className="w-6 h-6"
@@ -95,114 +108,91 @@ export default function TicketModal({ isOpen, onClose }) {
               </button>
             </div>
 
-            <form onSubmit={handleSubmit} className="p-4 sm:p-6 space-y-4">
+            {/* Form Input Fields */}
+            <form onSubmit={handleSubmit} className="p-6 space-y-4.5 max-h-[80vh] overflow-y-auto">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-bold text-gray-700 mb-1">
-                    Nama <span className="text-red-500">*</span>
+                  <label className="block text-xs font-bold text-slate-700 dark:text-slate-200 mb-1.5">
+                    Nama Pemohon <span className="text-red-500">*</span>
                   </label>
                   <input
                     type="text"
                     name="nama"
                     value={formData.nama}
                     readOnly
-                    className="w-full bg-gray-100 text-gray-500 rounded-lg px-3 py-2 text-sm outline-none cursor-not-allowed"
+                    className="w-full bg-slate-100 dark:bg-slate-800/70 text-slate-500 dark:text-slate-400 border border-slate-200 dark:border-slate-700/80 rounded-xl px-3.5 py-2.5 text-sm outline-none cursor-not-allowed font-medium"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold text-gray-700 mb-1">
-                    Email <span className="text-red-500">*</span>
+                  <label className="block text-xs font-bold text-slate-700 dark:text-slate-200 mb-1.5">
+                    Email Institusi <span className="text-red-500">*</span>
                   </label>
                   <input
                     type="email"
                     name="email"
                     value={formData.email}
                     readOnly
-                    className="w-full bg-gray-100 text-gray-500 rounded-lg px-3 py-2 text-sm outline-none cursor-not-allowed"
+                    className="w-full bg-slate-100 dark:bg-slate-800/70 text-slate-500 dark:text-slate-400 border border-slate-200 dark:border-slate-700/80 rounded-xl px-3.5 py-2.5 text-sm outline-none cursor-not-allowed font-medium"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-gray-700 mb-1">
-                  Nomor WhatsApp <span className="text-red-500">*</span>
+                <label className="block text-xs font-bold text-slate-700 dark:text-slate-200 mb-1.5">
+                  Nomor WhatsApp Aktif <span className="text-red-500">*</span>
                 </label>
                 <input
-                  type="text"
+                  type="tel"
                   name="whatsapp"
+                  placeholder="Contoh: 081234567890"
                   value={formData.whatsapp}
                   onChange={handleChange}
                   required
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none"
+                  className="w-full bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder-slate-400 border border-slate-300 dark:border-slate-700 rounded-xl px-3.5 py-2.5 text-sm focus:border-blue-500 dark:focus:border-blue-400 focus:ring-2 focus:ring-blue-500/20 dark:focus:ring-blue-400/20 outline-none transition-all"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-gray-700 mb-1">
+                <label className="block text-xs font-bold text-slate-700 dark:text-slate-200 mb-1.5">
                   Judul Pengaduan <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="text"
                   name="judul"
+                  placeholder="Ringkasan singkat kendala yang dihadapi..."
                   value={formData.judul}
                   onChange={handleChange}
                   required
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:border-blue-500 outline-none"
+                  className="w-full bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder-slate-400 border border-slate-300 dark:border-slate-700 rounded-xl px-3.5 py-2.5 text-sm focus:border-blue-500 dark:focus:border-blue-400 focus:ring-2 focus:ring-blue-500/20 dark:focus:ring-blue-400/20 outline-none transition-all"
                 />
-              </div>
-
-              <div>
-                <label className="block text-xs font-bold text-gray-700 mb-1">
-                  Kategori Masalah <span className="text-red-500">*</span>
-                </label>
-                <select
-                  name="kategori"
-                  value={formData.kategori}
-                  onChange={handleChange}
-                  required
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:border-blue-500 outline-none bg-white"
-                >
-                  <option value="" disabled>
-                    Pilih Kategori
-                  </option>
-                  <option value="Akademik">Akademik</option>
-                  <option value="Sistem Informasi">Sistem Informasi</option>
-                  <option value="Jaringan / Internet">
-                    Jaringan / Internet
-                  </option>
-                  <option value="Infrastruktur">
-                    Infrastruktur / Fasilitas
-                  </option>
-                </select>
-              </div>
-
-              <div>
-                <label className="block text-xs font-bold text-gray-700 mb-1">
-                  Deskripsi Masalah <span className="text-red-500">*</span>
-                </label>
-                <textarea
-                  name="deskripsi"
-                  value={formData.deskripsi}
-                  onChange={handleChange}
-                  required
-                  rows="3"
-                  placeholder="Jelaskan kronologi, pesan error yang muncul..."
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:border-blue-500 outline-none resize-none"
-                ></textarea>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-bold text-gray-700 mb-1">
-                    Lampiran Foto / Screenshot
+                  <label className="block text-xs font-bold text-slate-700 dark:text-slate-200 mb-1.5">
+                    Kategori Masalah <span className="text-red-500">*</span>
                   </label>
-                  <input
-                    type="file"
-                    className="w-full border border-gray-300 rounded-lg text-sm file:mr-4 file:py-2 file:px-4 file:rounded-l-lg file:border-0 file:text-sm file:font-semibold file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200 cursor-pointer"
-                  />
+                  <select
+                    name="kategori"
+                    value={formData.kategori}
+                    onChange={handleChange}
+                    required
+                    className="w-full bg-white dark:bg-slate-800 text-slate-900 dark:text-white border border-slate-300 dark:border-slate-700 rounded-xl px-3.5 py-2.5 text-sm focus:border-blue-500 dark:focus:border-blue-400 outline-none transition-all cursor-pointer"
+                  >
+                    <option value="" disabled className="text-slate-400 dark:bg-slate-800">
+                      Pilih Kategori
+                    </option>
+                    <option value="Akademik" className="dark:bg-slate-800 dark:text-white">Akademik</option>
+                    <option value="Sistem Informasi" className="dark:bg-slate-800 dark:text-white">Sistem Informasi (SSO/SIAK)</option>
+                    <option value="Jaringan / Internet" className="dark:bg-slate-800 dark:text-white">Jaringan / WiFi Undiksha</option>
+                    <option value="Infrastruktur" className="dark:bg-slate-800 dark:text-white">
+                      Infrastruktur / Fasilitas
+                    </option>
+                  </select>
                 </div>
+
                 <div>
-                  <label className="block text-xs font-bold text-gray-700 mb-1">
+                  <label className="block text-xs font-bold text-slate-700 dark:text-slate-200 mb-1.5">
                     Unit Tujuan <span className="text-red-500">*</span>
                   </label>
                   <select
@@ -210,31 +200,60 @@ export default function TicketModal({ isOpen, onClose }) {
                     value={formData.unit}
                     onChange={handleChange}
                     required
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:border-blue-500 outline-none bg-white"
+                    className="w-full bg-white dark:bg-slate-800 text-slate-900 dark:text-white border border-slate-300 dark:border-slate-700 rounded-xl px-3.5 py-2.5 text-sm focus:border-blue-500 dark:focus:border-blue-400 outline-none transition-all cursor-pointer"
                   >
-                    <option value="" disabled>
+                    <option value="" disabled className="text-slate-400 dark:bg-slate-800">
                       Pilih Unit Tujuan
                     </option>
-                    <option value="FTEK">Fakultas Teknik dan Kejuruan</option>
-                    <option value="FIP">Fakultas Ilmu Pendidikan</option>
-                    <option value="UPA TIK">UPA TIK</option>
+                    <option value="UPA TIK" className="dark:bg-slate-800 dark:text-white">UPA TIK Undiksha</option>
+                    <option value="FTEK" className="dark:bg-slate-800 dark:text-white">Fakultas Teknik dan Kejuruan</option>
+                    <option value="FIP" className="dark:bg-slate-800 dark:text-white">Fakultas Ilmu Pendidikan</option>
+                    <option value="Rektorat" className="dark:bg-slate-800 dark:text-white">Layanan Akademik Rektorat</option>
                   </select>
                 </div>
               </div>
 
-              <div className="flex justify-end gap-3 pt-4 border-t border-gray-100 mt-6">
+              <div>
+                <label className="block text-xs font-bold text-slate-700 dark:text-slate-200 mb-1.5">
+                  Deskripsi Masalah <span className="text-red-500">*</span>
+                </label>
+                <textarea
+                  name="deskripsi"
+                  value={formData.deskripsi}
+                  onChange={handleChange}
+                  required
+                  rows={3}
+                  placeholder="Jelaskan kronologi, detail kendala, atau pesan error yang muncul..."
+                  className="w-full bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder-slate-400 border border-slate-300 dark:border-slate-700 rounded-xl px-3.5 py-2.5 text-sm focus:border-blue-500 dark:focus:border-blue-400 focus:ring-2 focus:ring-blue-500/20 dark:focus:ring-blue-400/20 outline-none resize-none transition-all"
+                ></textarea>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-700 dark:text-slate-200 mb-1.5">
+                  Lampiran Foto / Screenshot (Opsional)
+                </label>
+                <input
+                  type="file"
+                  className="w-full border border-slate-300 dark:border-slate-700 rounded-xl text-sm file:mr-4 file:py-2.5 file:px-4 file:rounded-l-xl file:border-0 file:text-sm file:font-semibold file:bg-slate-100 dark:file:bg-slate-800 file:text-slate-700 dark:file:text-slate-200 hover:file:bg-slate-200 dark:hover:file:bg-slate-700 text-slate-600 dark:text-slate-300 cursor-pointer bg-white dark:bg-slate-850"
+                />
+              </div>
+
+              <div className="flex justify-end gap-3 pt-4 border-t border-slate-100 dark:border-slate-800 mt-6">
                 <button
                   type="button"
                   onClick={handleClose}
-                  className="px-5 py-2 rounded-lg text-sm font-semibold bg-gray-200 text-gray-700 hover:bg-gray-300 transition-colors"
+                  className="px-5 py-2.5 rounded-xl text-sm font-semibold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors cursor-pointer"
                 >
-                  Tutup
+                  Batal
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 rounded-lg text-sm font-semibold bg-blue-600 text-white hover:bg-blue-700 transition-colors"
+                  className="px-6 py-2.5 rounded-xl text-sm font-bold bg-blue-600 hover:bg-blue-500 active:scale-95 text-white shadow-lg shadow-blue-600/30 transition-all cursor-pointer flex items-center gap-2"
                 >
-                  Buka Tiket
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 4v16m8-8H4" />
+                  </svg>
+                  <span>Buka Tiket</span>
                 </button>
               </div>
             </form>
@@ -242,7 +261,7 @@ export default function TicketModal({ isOpen, onClose }) {
         ) : (
           /* TAMPILAN 2: NOTIFIKASI BERHASIL */
           <div className="flex flex-col items-center justify-center p-10 py-16 text-center">
-            <div className="w-20 h-20 bg-green-500 rounded-full flex items-center justify-center mb-6 shadow-lg shadow-green-500/30 animate-bounce">
+            <div className="w-20 h-20 bg-emerald-500 rounded-full flex items-center justify-center mb-6 shadow-xl shadow-emerald-500/30 animate-bounce">
               <svg
                 className="w-10 h-10 text-white"
                 fill="none"
@@ -257,19 +276,20 @@ export default function TicketModal({ isOpen, onClose }) {
                 />
               </svg>
             </div>
-            <h2 className="text-2xl font-black text-gray-800 mb-2">
-              BERHASIL!
+            <h2 className="text-2xl font-black text-slate-900 dark:text-white mb-2">
+              PENGAJUAN BERHASIL!
             </h2>
-            <p className="text-gray-600 mb-8 max-w-sm">
-              Tiket berhasil diajukan.
+            <p className="text-slate-600 dark:text-slate-300 mb-8 max-w-sm leading-relaxed text-sm sm:text-base">
+              Tiket pengaduan Anda berhasil dibuat dan disimpan.
               <br />
-              Silahkan tunggu notifikasi kami via WhatsApp!
+              Silakan periksa halaman Status Tiket atau tunggu konfirmasi via WhatsApp.
             </p>
             <button
+              type="button"
               onClick={handleClose}
-              className="bg-blue-600 hover:bg-blue-700 text-white px-10 py-2.5 rounded-lg font-bold transition-colors"
+              className="bg-blue-600 hover:bg-blue-500 active:scale-95 text-white px-10 py-3 rounded-xl font-bold transition-all shadow-lg shadow-blue-600/30 cursor-pointer"
             >
-              OK
+              OK, Selesai
             </button>
           </div>
         )}

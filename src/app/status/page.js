@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Image from "next/image";
-import Link from "next/link";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 
 export default function StatusPage() {
   const [ticketId, setTicketId] = useState("");
@@ -13,7 +13,7 @@ export default function StatusPage() {
     if (!query) return;
     const tickets = JSON.parse(localStorage.getItem("missu_tickets")) || [];
     const foundTicket = tickets.find(
-      (t) => t.id.toLowerCase() === query.toLowerCase(),
+      (t) => t.id.toLowerCase() === query.trim().toLowerCase(),
     );
 
     if (foundTicket) {
@@ -25,7 +25,6 @@ export default function StatusPage() {
     }
   };
 
-  // Mengecek apakah ada ID yang dikirim dari halaman Riwayat
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search);
     const idParam = searchParams.get("id");
@@ -43,50 +42,41 @@ export default function StatusPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 font-sans">
-      {/* Navbar Simple */}
-      <div className="bg-[#0d1a63] w-full px-6 md:px-12 py-4 flex items-center gap-3">
-        <Link href="/" className="flex items-center gap-3">
-          <Image
-            src="/undiksha-logo.svg"
-            alt="Logo Undiksha"
-            width={36}
-            height={36}
-            className="object-contain"
-          />
-          <span className="text-white font-bold text-xl tracking-widest">
-            MISSU
-          </span>
-        </Link>
-      </div>
+    <div className="min-h-screen bg-slate-50 dark:bg-[#0b0f19] text-slate-900 dark:text-slate-100 font-sans flex flex-col transition-colors duration-200">
+      <Navbar />
 
-      <div className="max-w-4xl mx-auto px-4 py-8">
-        <div className="bg-white shadow-sm border border-gray-100 rounded-2xl p-6 md:p-10">
-          <h1 className="text-2xl md:text-3xl font-extrabold text-gray-900 mb-2 uppercase">
-            Cek Status Tiket
-          </h1>
-          <p className="text-gray-500 text-sm md:text-base mb-8">
-            Pantau status dan perkembangan tiket Anda.
-          </p>
+      <main className="flex-grow max-w-4xl w-full mx-auto px-4 sm:px-6 py-10">
+        <div className="bg-white dark:bg-slate-900 shadow-sm border border-slate-200/80 dark:border-slate-800 rounded-3xl p-6 sm:p-10 transition-colors">
+          <div className="mb-8">
+            <span className="text-xs sm:text-sm font-bold tracking-widest text-blue-600 dark:text-blue-400 uppercase mb-1 block">
+              Pelacakan
+            </span>
+            <h1 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white uppercase tracking-tight">
+              Cek Status Tiket
+            </h1>
+            <p className="text-slate-600 dark:text-slate-300 text-sm sm:text-base mt-1">
+              Pantau status dan perkembangan penanganan tiket pengaduan Anda.
+            </p>
+          </div>
 
           {/* Card Ungu Cek Status */}
-          <div className="bg-gradient-to-br from-[#4A3AFF] to-[#3421C0] rounded-2xl p-8 md:p-12 text-center text-white shadow-xl">
-            <h2 className="text-xl md:text-2xl font-bold mb-2 uppercase">
+          <div className="bg-gradient-to-br from-[#4A3AFF] via-[#3724c9] to-[#20178c] dark:from-[#2e23a8] dark:via-[#221585] dark:to-[#120b57] rounded-3xl p-8 sm:p-12 text-center text-white shadow-xl relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl pointer-events-none"></div>
+
+            <h2 className="text-xl sm:text-2xl font-black mb-2 uppercase tracking-wide">
               Pantau Status Tiket Anda
             </h2>
-            <p className="text-sm md:text-base text-blue-100 mb-8 max-w-md mx-auto">
-              Masukkan Nomor ID Tiket (misal: TKT-001) untuk melihat status
-              perbaikan saat ini.
+            <p className="text-sm sm:text-base text-blue-100 mb-8 max-w-md mx-auto">
+              Masukkan Nomor ID Tiket (misal: <code className="bg-white/20 px-1.5 py-0.5 rounded font-mono font-bold">TKT-1234</code>) untuk melihat riwayat dan progress saat ini.
             </p>
 
             <form
               onSubmit={handleSearch}
-              className="flex flex-col sm:flex-row gap-4 w-full max-w-2xl mx-auto"
+              className="flex flex-col sm:flex-row gap-3.5 w-full max-w-2xl mx-auto"
             >
               <div className="relative flex-1">
-                {/* Ikon Kaca Pembesar */}
                 <svg
-                  className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-6 h-6"
+                  className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 w-5 h-5 pointer-events-none"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -100,21 +90,20 @@ export default function StatusPage() {
                 </svg>
                 <input
                   type="text"
-                  placeholder="Masukkan nomor tiket..."
+                  placeholder="Masukkan nomor ID tiket..."
                   value={ticketId}
                   onChange={(e) => setTicketId(e.target.value)}
-                  className="w-full pl-12 pr-4 py-4 bg-white rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-300 font-medium"
+                  className="w-full pl-12 pr-4 py-3.5 bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder-slate-400 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-300 font-medium text-sm sm:text-base shadow-sm border border-transparent dark:border-slate-700"
                   required
                 />
               </div>
               <button
                 type="submit"
-                className="bg-white text-[#4A3AFF] font-bold py-4 px-8 rounded-xl flex items-center justify-center gap-2 hover:bg-gray-50 transition-colors whitespace-nowrap"
+                className="bg-white text-blue-700 hover:bg-blue-50 active:scale-95 font-bold py-3.5 px-7 rounded-2xl flex items-center justify-center gap-2 transition-all whitespace-nowrap cursor-pointer shadow-md text-sm sm:text-base shrink-0"
               >
-                Cek Status
-                {/* Ikon Panah Kanan */}
+                <span>Cek Status</span>
                 <svg
-                  className="w-5 h-5"
+                  className="w-4 h-4"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -132,24 +121,26 @@ export default function StatusPage() {
 
           {/* Not Found State */}
           {isNotFound && (
-            <div className="mt-8 p-6 bg-red-50 text-red-600 rounded-xl text-center font-medium border border-red-100">
-              Tiket dengan ID &quot;{ticketId}&quot; tidak ditemukan.
+            <div className="mt-8 p-5 bg-red-50 dark:bg-red-950/40 text-red-700 dark:text-red-300 rounded-2xl text-center font-medium border border-red-200 dark:border-red-900/60 animate-in fade-in">
+              Tiket dengan ID &quot;<span className="font-mono font-bold">{ticketId}</span>&quot; tidak ditemukan pada riwayat lokal perangkat ini.
             </div>
           )}
 
-          {/* Result State (Mirip Figma Cek Status Tiket/Clicked) */}
+          {/* Result State */}
           {result && (
-            <div className="mt-12 bg-white">
-              <div className="flex items-center gap-4 mb-8">
+            <div className="mt-10 pt-8 border-t border-slate-100 dark:border-slate-800 animate-in fade-in">
+              <div className="flex items-center gap-3 mb-6">
                 <button
+                  type="button"
                   onClick={() => {
                     setResult(null);
                     setTicketId("");
                   }}
-                  className="text-blue-600 hover:bg-blue-50 p-2 rounded-full transition-colors"
+                  className="text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-slate-800 p-2 rounded-xl transition-colors cursor-pointer"
+                  title="Kembali ke pencarian"
                 >
                   <svg
-                    className="w-8 h-8"
+                    className="w-6 h-6"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -162,56 +153,114 @@ export default function StatusPage() {
                     />
                   </svg>
                 </button>
-                <h2 className="text-2xl font-bold text-gray-900">
-                  Status Tiket
-                </h2>
+                <div>
+                  <h2 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white">
+                    Detail Status Tiket
+                  </h2>
+                  <p className="text-xs text-slate-500 dark:text-slate-400">
+                    Informasi progress dan tindak lanjut aduan Anda
+                  </p>
+                </div>
               </div>
 
-              <div className="mb-10">
-                <h3 className="text-xl font-bold text-gray-900 mb-2">
-                  {result.judul}
-                </h3>
-                <p className="text-gray-500 text-sm font-medium">
-                  ID: <span className="text-blue-600">{result.id}</span>{" "}
-                  <span className="mx-2 text-gray-300">•</span> {result.tanggal}
+              <div className="bg-slate-50 dark:bg-slate-800/60 border border-slate-200/70 dark:border-slate-700/80 rounded-2xl p-6 mb-8">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
+                  <h3 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-white">
+                    {result.judul}
+                  </h3>
+                  <span
+                    className={`inline-block px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider self-start sm:self-auto ${
+                      result.status === "Done" || result.status === "Selesai"
+                        ? "bg-emerald-100 dark:bg-emerald-950/80 text-emerald-800 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800"
+                        : "bg-amber-100 dark:bg-amber-950/80 text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-amber-800"
+                    }`}
+                  >
+                    {result.status}
+                  </span>
+                </div>
+
+                <div className="flex flex-wrap items-center gap-2 text-xs sm:text-sm text-slate-500 dark:text-slate-300 mb-4 font-medium">
+                  <span>ID: <strong className="font-mono text-blue-600 dark:text-blue-400">{result.id}</strong></span>
+                  <span>•</span>
+                  <span>Kategori: <strong>{result.kategori || "Umum"}</strong></span>
+                  <span>•</span>
+                  <span>Unit: <strong>{result.unit || "Helpdesk"}</strong></span>
+                  <span>•</span>
+                  <span>{result.tanggal} {result.waktu ? `(${result.waktu})` : ""}</span>
+                </div>
+
+                <p className="text-sm text-slate-600 dark:text-slate-300 bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-800 leading-relaxed">
+                  {result.deskripsi}
                 </p>
               </div>
 
               {/* Timeline Status */}
-              <div className="flex items-start gap-5">
-                <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center shrink-0 mt-1 shadow-md shadow-blue-500/30">
-                  <svg
-                    className="w-5 h-5 text-white"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={3}
-                      d="M5 13l4 4L19 7"
-                    />
-                  </svg>
-                </div>
-                <div className="flex-1">
-                  <div className="flex justify-between items-start mb-2">
-                    <h4 className="font-bold text-gray-900 text-lg">
-                      Pembuatan Tiket Baru Berhasil
-                    </h4>
-                    <span className="text-gray-400 text-xs font-medium mt-1">
-                      Sesaat yang lalu
-                    </span>
+              <div className="space-y-6 pl-2">
+                <div className="flex items-start gap-4 relative">
+                  <div className="w-8 h-8 rounded-full bg-emerald-500 text-white flex items-center justify-center shrink-0 mt-0.5 shadow-md shadow-emerald-500/20">
+                    <svg
+                      className="w-4 h-4"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={3}
+                        d="M5 13l4 4L19 7"
+                      />
+                    </svg>
                   </div>
-                  <span className="bg-[#fcf3d9] text-[#b88c1f] text-xs font-bold px-4 py-1.5 rounded-full inline-block mt-1">
-                    {result.status}
-                  </span>
+                  <div className="flex-1">
+                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center">
+                      <h4 className="font-bold text-slate-900 dark:text-white text-base">
+                        Pembuatan Tiket Pengaduan Berhasil
+                      </h4>
+                      <span className="text-slate-400 dark:text-slate-400 text-xs font-medium">
+                        {result.tanggal}
+                      </span>
+                    </div>
+                    <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-0.5">
+                      Tiket telah diterima dan dialokasikan ke unit {result.unit || "terkait"}.
+                    </p>
+                  </div>
                 </div>
+
+                {result.status === "Done" && (
+                  <div className="flex items-start gap-4 relative">
+                    <div className="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center shrink-0 mt-0.5 shadow-md shadow-blue-600/20">
+                      <svg
+                        className="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={3}
+                          d="M5 13l4 4L19 7"
+                        />
+                      </svg>
+                    </div>
+                    <div className="flex-1">
+                      <h4 className="font-bold text-slate-900 dark:text-white text-base">
+                        Penanganan Telah Selesai
+                      </h4>
+                      <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-0.5">
+                        Kendala telah diselesaikan oleh petugas teknis. Terima kasih atas kerja sama Anda.
+                      </p>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           )}
         </div>
-      </div>
+      </main>
+
+      <Footer />
     </div>
   );
 }
