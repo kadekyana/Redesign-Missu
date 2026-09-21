@@ -2,11 +2,20 @@
 
 import { useTheme } from "@/context/ThemeContext";
 
-export default function ThemeToggle({ showLabel = false, className = "" }) {
+export default function ThemeToggle({ showLabel = false, className = "", variant = "navbar" }) {
   const { theme, toggleTheme, mounted } = useTheme();
 
   // Mencegah hydration mismatch sebelum mounted di client
   const isDark = mounted ? theme === "dark" : false;
+
+  const baseThemeStyles =
+    variant === "default"
+      ? isDark
+        ? "bg-slate-800 text-amber-300 hover:bg-slate-700/90 border border-slate-700 shadow-xs"
+        : "bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200/80 shadow-xs"
+      : isDark
+        ? "bg-slate-800/90 text-amber-300 hover:bg-slate-700/90 border border-slate-700 shadow-sm hover:shadow-amber-500/10"
+        : "bg-white/20 text-white hover:bg-white/30 border border-white/25 shadow-sm hover:shadow-blue-500/10";
 
   return (
     <button
@@ -14,11 +23,7 @@ export default function ThemeToggle({ showLabel = false, className = "" }) {
       onClick={toggleTheme}
       aria-label={isDark ? "Beralih ke Mode Terang" : "Beralih ke Mode Gelap"}
       title={isDark ? "Beralih ke Mode Terang (Light Mode)" : "Beralih ke Mode Gelap (Night Mode)"}
-      className={`relative inline-flex items-center gap-2 px-3 py-2 rounded-full text-xs font-semibold transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-400/50 select-none ${
-        isDark
-          ? "bg-slate-800/90 text-amber-300 hover:bg-slate-700/90 border border-slate-700 shadow-sm hover:shadow-amber-500/10"
-          : "bg-white/20 text-white hover:bg-white/30 border border-white/25 shadow-sm hover:shadow-blue-500/10"
-      } ${className}`}
+      className={`relative inline-flex items-center gap-2 px-3 py-2 rounded-full text-xs font-semibold transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-400/50 select-none ${baseThemeStyles} ${className}`}
     >
       {/* Container Icon dengan animasi rotasi */}
       <span className="relative w-5 h-5 flex items-center justify-center shrink-0">
@@ -45,7 +50,9 @@ export default function ThemeToggle({ showLabel = false, className = "" }) {
         <svg
           className={`w-4.5 h-4.5 transition-all duration-300 transform ${
             !isDark
-              ? "opacity-100 rotate-0 text-blue-100 scale-100"
+              ? variant === "default"
+                ? "opacity-100 rotate-0 text-slate-700 scale-100"
+                : "opacity-100 rotate-0 text-blue-100 scale-100"
               : "opacity-0 rotate-90 scale-50 absolute"
           }`}
           fill="none"

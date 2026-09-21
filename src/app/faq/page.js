@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Navbar from "@/components/Navbar";
+import Link from "next/link";
+import ThemeToggle from "@/components/ThemeToggle";
 import Footer from "@/components/Footer";
 
 const faqData = [
@@ -117,112 +118,143 @@ export default function FAQPage() {
   });
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-[#0b0f19] text-slate-900 dark:text-slate-100 font-sans flex flex-col transition-colors duration-200">
-      <Navbar />
+    <div className="min-h-screen bg-slate-50 dark:bg-[#0b0f19] text-slate-900 dark:text-slate-100 font-sans flex flex-col relative overflow-hidden transition-colors duration-200">
+      {/* Background ambient lighting */}
+      <div className="absolute top-0 left-0 w-full h-full -z-10 overflow-hidden pointer-events-none">
+        <div className="absolute top-[-10%] left-[-10%] w-[60%] h-[60%] bg-[#523be2] opacity-[0.04] dark:opacity-[0.10] rounded-full blur-[150px]"></div>
+        <div className="absolute bottom-[-10%] right-[-10%] w-[60%] h-[60%] bg-[#1c40f2] opacity-[0.04] dark:opacity-[0.10] rounded-full blur-[150px]"></div>
+      </div>
 
       {/* Main Content Area */}
-      <main className="w-full max-w-5xl mx-auto px-4 sm:px-6 md:px-12 py-10 md:py-14 flex-grow">
-        <div className="mb-8">
-          <span className="text-xs sm:text-sm font-bold tracking-widest text-blue-600 dark:text-blue-400 uppercase mb-1 block">
-            Pusat Bantuan
-          </span>
-          <h1 className="text-2xl md:text-[32px] font-black text-slate-900 dark:text-white uppercase tracking-tight">
-            PUSAT BANTUAN / FAQ
-          </h1>
-          <p className="text-slate-600 dark:text-slate-300 text-sm md:text-base mt-1">
-            Punya pertanyaan seputar layanan kampus? Temukan jawabannya di sini.
-          </p>
-        </div>
-
-        {/* Input Pencarian FAQ Internal */}
-        <div className="mb-8 max-w-md">
-          <div className="relative">
-            <svg
-              className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 pointer-events-none"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
+      <main className="flex-grow max-w-4xl w-full mx-auto px-4 sm:px-6 py-8 sm:py-12">
+        <div className="bg-white dark:bg-slate-900 shadow-sm border border-slate-200/80 dark:border-slate-800 rounded-3xl p-6 sm:p-10 transition-colors">
+          {/* Card Top Action Bar: Tombol Kembali & Theme Toggle */}
+          <div className="flex items-center justify-between gap-4 mb-8 pb-5 border-b border-slate-100 dark:border-slate-800">
+            <Link
+              href="/"
+              className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold text-slate-700 dark:text-slate-200 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700/80 transition-all duration-200 group border border-slate-200/80 dark:border-slate-700 cursor-pointer shadow-xs hover:shadow-sm"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+              <svg
+                className="w-4 h-4 transition-transform duration-200 group-hover:-translate-x-1 text-slate-500 dark:text-slate-400 group-hover:text-blue-600 dark:group-hover:text-blue-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2.5}
+                  d="M10 19l-7-7m0 0l7-7m-7 7h18"
+                />
+              </svg>
+              <span>Kembali ke Dashboard</span>
+            </Link>
+
+            <ThemeToggle variant="default" />
+          </div>
+
+          <div className="mb-8">
+            <span className="text-xs sm:text-sm font-bold tracking-widest text-blue-600 dark:text-blue-400 uppercase mb-1 block">
+              Pusat Bantuan
+            </span>
+            <h1 className="text-2xl md:text-[32px] font-black text-slate-900 dark:text-white uppercase tracking-tight">
+              PUSAT BANTUAN / FAQ
+            </h1>
+            <p className="text-slate-600 dark:text-slate-300 text-sm md:text-base mt-1">
+              Punya pertanyaan seputar layanan kampus? Temukan jawabannya di sini.
+            </p>
+          </div>
+
+          {/* Input Pencarian FAQ Internal */}
+          <div className="mb-8 max-w-md">
+            <div className="relative">
+              <svg
+                className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 pointer-events-none"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                />
+              </svg>
+              <input
+                type="text"
+                placeholder="Ketik topik atau pertanyaan..."
+                value={searchQuery}
+                onChange={handleSearchChange}
+                className="w-full pl-12 pr-4 py-3 bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm text-slate-900 dark:text-white placeholder-slate-400 transition-all shadow-xs"
               />
-            </svg>
-            <input
-              type="text"
-              placeholder="Ketik topik atau pertanyaan..."
-              value={searchQuery}
-              onChange={handleSearchChange}
-              className="w-full pl-12 pr-4 py-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm text-slate-900 dark:text-white placeholder-slate-400 transition-all shadow-xs"
-            />
-          </div>
-        </div>
-
-        {/* Kategori / Tabs */}
-        {!searchQuery && (
-          <div className="flex flex-wrap gap-2.5 mb-10 border-b border-slate-200/80 dark:border-slate-800 pb-5">
-            {tabs.map((tab) => {
-              const isActive = activeTab === tab;
-              return (
-                <button
-                  type="button"
-                  key={tab}
-                  onClick={() => {
-                    setActiveTab(tab);
-                    setSearchQuery("");
-                  }}
-                  className={`px-4 sm:px-5 py-2 rounded-full border text-xs sm:text-sm font-semibold transition-all duration-200 cursor-pointer ${
-                    isActive
-                      ? "bg-[#eef2f6] dark:bg-blue-600/20 border-slate-400 dark:border-blue-500 text-slate-900 dark:text-blue-300 shadow-xs"
-                      : "bg-white dark:bg-slate-900 border-slate-300 dark:border-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 hover:dark:text-white"
-                  }`}
-                >
-                  {tab}
-                </button>
-              );
-            })}
-          </div>
-        )}
-
-        {/* Daftar FAQ (Accordion Style) */}
-        <div className="flex flex-col gap-4 min-h-[300px]">
-          {filteredFaqs.length === 0 ? (
-            <div className="py-12 text-center text-slate-500 dark:text-slate-400 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-8">
-              <p className="font-medium text-base mb-1">Pertanyaan tidak ditemukan</p>
-              <p className="text-xs sm:text-sm text-slate-400">Silakan buat tiket pengaduan jika Anda membutuhkan bantuan lebih lanjut.</p>
             </div>
-          ) : (
-            filteredFaqs.map((faq) => {
-              const isExpanded = expandedId === faq.id;
-              return (
-                <div
-                  key={faq.id}
-                  className="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-2xl p-5 shadow-2xs hover:border-blue-300 dark:hover:border-blue-500/40 transition-all"
-                >
+          </div>
+
+          {/* Kategori / Tabs */}
+          {!searchQuery && (
+            <div className="flex flex-wrap gap-2.5 mb-10 border-b border-slate-200/80 dark:border-slate-800 pb-5">
+              {tabs.map((tab) => {
+                const isActive = activeTab === tab;
+                return (
                   <button
                     type="button"
-                    onClick={() => toggleFAQ(faq.id)}
-                    className="flex items-start gap-3.5 w-full text-left focus:outline-none group cursor-pointer"
+                    key={tab}
+                    onClick={() => {
+                      setActiveTab(tab);
+                      setSearchQuery("");
+                    }}
+                    className={`px-4 sm:px-5 py-2 rounded-full border text-xs sm:text-sm font-semibold transition-all duration-200 cursor-pointer ${
+                      isActive
+                        ? "bg-blue-600 border-blue-600 text-white shadow-xs font-bold"
+                        : "bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 hover:dark:text-white"
+                    }`}
                   >
-                    <div className="w-6 h-6 bg-slate-800 dark:bg-slate-700 text-white flex items-center justify-center text-sm font-bold shrink-0 rounded-md mt-0.5 group-hover:bg-blue-600 dark:group-hover:bg-blue-500 transition-colors">
-                      {isExpanded ? "−" : "+"}
-                    </div>
-                    <h3 className="font-bold text-slate-900 dark:text-white text-base sm:text-lg leading-snug group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors flex-1">
-                      {faq.q}
-                    </h3>
+                    {tab}
                   </button>
-
-                  {isExpanded && (
-                    <div className="ml-9.5 mt-3 pt-3 border-t border-slate-100 dark:border-slate-800 text-slate-600 dark:text-slate-300 text-sm sm:text-base leading-relaxed animate-in fade-in slide-in-from-top-1 duration-200">
-                      {faq.a}
-                    </div>
-                  )}
-                </div>
-              );
-            })
+                );
+              })}
+            </div>
           )}
+
+          {/* Daftar FAQ (Accordion Style) */}
+          <div className="flex flex-col gap-4 min-h-[300px]">
+            {filteredFaqs.length === 0 ? (
+              <div className="py-12 text-center text-slate-500 dark:text-slate-400 bg-slate-50 dark:bg-slate-800/40 rounded-2xl border border-slate-200/80 dark:border-slate-700/80 p-8">
+                <p className="font-medium text-base mb-1">Pertanyaan tidak ditemukan</p>
+                <p className="text-xs sm:text-sm text-slate-400">Silakan buat tiket pengaduan jika Anda membutuhkan bantuan lebih lanjut.</p>
+              </div>
+            ) : (
+              filteredFaqs.map((faq) => {
+                const isExpanded = expandedId === faq.id;
+                return (
+                  <div
+                    key={faq.id}
+                    className="bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700/70 rounded-2xl p-5 shadow-2xs hover:border-blue-300 dark:hover:border-blue-500/40 transition-all"
+                  >
+                    <button
+                      type="button"
+                      onClick={() => toggleFAQ(faq.id)}
+                      className="flex items-start gap-3.5 w-full text-left focus:outline-none group cursor-pointer"
+                    >
+                      <div className="w-6 h-6 bg-slate-800 dark:bg-slate-700 text-white flex items-center justify-center text-sm font-bold shrink-0 rounded-md mt-0.5 group-hover:bg-blue-600 dark:group-hover:bg-blue-500 transition-colors">
+                        {isExpanded ? "−" : "+"}
+                      </div>
+                      <h3 className="font-bold text-slate-900 dark:text-white text-base sm:text-lg leading-snug group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors flex-1">
+                        {faq.q}
+                      </h3>
+                    </button>
+
+                    {isExpanded && (
+                      <div className="ml-9.5 mt-3 pt-3 border-t border-slate-200/80 dark:border-slate-700 text-slate-600 dark:text-slate-300 text-sm sm:text-base leading-relaxed animate-in fade-in slide-in-from-top-1 duration-200">
+                        {faq.a}
+                      </div>
+                    )}
+                  </div>
+                );
+              })
+            )}
+          </div>
         </div>
       </main>
 

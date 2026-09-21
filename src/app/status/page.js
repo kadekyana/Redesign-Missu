@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Navbar from "@/components/Navbar";
+import Link from "next/link";
+import ThemeToggle from "@/components/ThemeToggle";
 import Footer from "@/components/Footer";
 
 export default function StatusPage() {
@@ -42,11 +43,39 @@ export default function StatusPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-[#0b0f19] text-slate-900 dark:text-slate-100 font-sans flex flex-col transition-colors duration-200">
-      <Navbar />
+    <div className="min-h-screen bg-slate-50 dark:bg-[#0b0f19] text-slate-900 dark:text-slate-100 font-sans flex flex-col relative overflow-hidden transition-colors duration-200">
+      {/* Background ambient lighting */}
+      <div className="absolute top-0 left-0 w-full h-full -z-10 overflow-hidden pointer-events-none">
+        <div className="absolute top-[-10%] left-[-10%] w-[60%] h-[60%] bg-[#523be2] opacity-[0.04] dark:opacity-[0.10] rounded-full blur-[150px]"></div>
+        <div className="absolute bottom-[-10%] right-[-10%] w-[60%] h-[60%] bg-[#1c40f2] opacity-[0.04] dark:opacity-[0.10] rounded-full blur-[150px]"></div>
+      </div>
 
-      <main className="flex-grow max-w-4xl w-full mx-auto px-4 sm:px-6 py-10">
+      <main className="flex-grow max-w-4xl w-full mx-auto px-4 sm:px-6 py-8 sm:py-12">
         <div className="bg-white dark:bg-slate-900 shadow-sm border border-slate-200/80 dark:border-slate-800 rounded-3xl p-6 sm:p-10 transition-colors">
+          {/* Card Top Action Bar: Tombol Kembali & Theme Toggle */}
+          <div className="flex items-center justify-between gap-4 mb-8 pb-5 border-b border-slate-100 dark:border-slate-800">
+            <Link
+              href="/"
+              className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold text-slate-700 dark:text-slate-200 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700/80 transition-all duration-200 group border border-slate-200/80 dark:border-slate-700 cursor-pointer shadow-xs hover:shadow-sm"
+            >
+              <svg
+                className="w-4 h-4 transition-transform duration-200 group-hover:-translate-x-1 text-slate-500 dark:text-slate-400 group-hover:text-blue-600 dark:group-hover:text-blue-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2.5}
+                  d="M10 19l-7-7m0 0l7-7m-7 7h18"
+                />
+              </svg>
+              <span>Kembali ke Dashboard</span>
+            </Link>
+
+            <ThemeToggle variant="default" />
+          </div>
           <div className="mb-8">
             <span className="text-xs sm:text-sm font-bold tracking-widest text-blue-600 dark:text-blue-400 uppercase mb-1 block">
               Pelacakan
