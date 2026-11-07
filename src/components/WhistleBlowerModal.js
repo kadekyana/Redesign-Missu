@@ -121,15 +121,24 @@ export default function WhistleBlowerModal({ isOpen, onClose }) {
             </div>
 
             <div>
-              <label className="block font-bold text-slate-800 dark:text-slate-200 mb-2 text-sm sm:text-base">
-                Lampirkan Bukti Foto / Dokumen / Screenshot{" "}
-                <span className="text-red-500">*</span>
-              </label>
+              <div className="flex items-center justify-between mb-2">
+                <label className="block font-bold text-slate-800 dark:text-slate-200 text-sm sm:text-base">
+                  Lampirkan Bukti Foto / Dokumen / Screenshot{" "}
+                  <span className="text-red-500">*</span>
+                </label>
+                <span className="text-[10px] font-bold uppercase tracking-wider text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950/70 px-2 py-0.5 rounded-md border border-red-200/60 dark:border-red-800/60">
+                  Wajib PDF / Gambar
+                </span>
+              </div>
               <input
                 type="file"
                 required
+                accept=".pdf,application/pdf,image/png,image/jpeg,image/jpg,image/webp,image/*"
                 className="w-full border border-slate-300 dark:border-slate-700 rounded-xl text-slate-600 dark:text-slate-300 file:mr-4 file:py-3 file:px-4 file:border-0 file:border-r file:border-slate-300 dark:file:border-slate-700 file:text-sm file:font-semibold file:bg-slate-100 dark:file:bg-slate-800 file:text-slate-700 dark:file:text-slate-200 hover:file:bg-slate-200 dark:hover:file:bg-slate-700 cursor-pointer bg-white dark:bg-slate-850"
               />
+              <p className="text-xs text-slate-500 dark:text-slate-400 mt-1.5">
+                Format yang diterima: PDF atau Gambar (JPG, JPEG, PNG, WebP).
+              </p>
             </div>
 
             {/* Footer Buttons */}

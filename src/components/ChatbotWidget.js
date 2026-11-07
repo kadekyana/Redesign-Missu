@@ -176,11 +176,24 @@ const KNOWLEDGE_BASE = [
       "koreksi biodata",
       "ktp",
       "kk",
+      "edit data diri",
+      "data diri",
+      "ubah data diri",
+      "ganti nama",
+      "biodata",
+      "profil",
+      "identitas",
     ],
     answer:
-      "Jika terdapat kesalahan pada Nama, Tempat/Tanggal Lahir, atau Nama Ibu Kandung pada pangkalan data:\n\nSilakan langsung menghubungi bagian **Layanan Akademik di Gedung Rektorat Undiksha** dengan membawa dokumen pendukung asli dan fotokopi (KTP, Kartu Keluarga, dan Akta Kelahiran).",
+      "Untuk perbaikan atau koreksi **Data Diri Mahasiswa (Nama, Tempat/Tanggal Lahir, Nama Ibu Kandung)** pada pangkalan data PDDikti Kemdikbudristek:\n\n1. Siapkan dokumen scan PDF (maks. 200 KB per file): Surat Permohonan, Ijazah Asli, Transkrip/KHS, Akta Lahir, KK, dan KTP (sinkron Dukcapil).\n2. Isi permohonan online melalui formulir resmi Undiksha di bawah ini atau hubungi Layanan Akademik di Gedung Rektorat Undiksha.",
     actions: [
-      { label: "Lihat FAQ Terkait", type: "link", url: "/faq" },
+      {
+        label: "Buka Form Edit Data Diri",
+        type: "link",
+        url: "https://go.undiksha.ac.id/Perubahan-Data-PDDikti",
+        external: true,
+      },
+      { label: "Panduan Lengkap di FAQ", type: "link", url: "/faq?search=data+diri" },
     ],
   },
   {

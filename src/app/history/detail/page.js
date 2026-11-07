@@ -164,6 +164,34 @@ export default function TicketDetailPage() {
             <p className="text-slate-600 dark:text-slate-300 leading-relaxed text-sm bg-slate-50 dark:bg-slate-800/40 p-4 rounded-xl border border-slate-200/80 dark:border-slate-800">
               {ticket.deskripsi}
             </p>
+
+            {/* Lampiran Berkas (PDF / Gambar) */}
+            {ticket.lampiran && (
+              <div className="mt-4">
+                <h4 className="text-slate-900 dark:text-white font-bold text-sm mb-2">
+                  Lampiran Berkas Pendukung:
+                </h4>
+                <div className="flex items-center gap-3 p-3.5 bg-slate-50 dark:bg-slate-800/60 rounded-xl border border-slate-200/80 dark:border-slate-700 w-fit max-w-full">
+                  <div
+                    className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 font-extrabold text-xs text-white ${
+                      ticket.lampiran.tipe === "PDF"
+                        ? "bg-red-500"
+                        : "bg-blue-600"
+                    }`}
+                  >
+                    {ticket.lampiran.tipe === "PDF" ? "PDF" : "IMG"}
+                  </div>
+                  <div className="truncate">
+                    <p className="text-xs sm:text-sm font-bold text-slate-900 dark:text-white truncate">
+                      {ticket.lampiran.nama}
+                    </p>
+                    <p className="text-[11px] text-slate-500 dark:text-slate-400">
+                      Format: {ticket.lampiran.tipe} • Ukuran: {ticket.lampiran.ukuran}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </main>

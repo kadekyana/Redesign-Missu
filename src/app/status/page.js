@@ -221,6 +221,28 @@ export default function StatusPage() {
                 <p className="text-sm text-slate-600 dark:text-slate-300 bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-800 leading-relaxed">
                   {result.deskripsi}
                 </p>
+
+                {result.lampiran && (
+                  <div className="mt-3 flex items-center gap-3 p-3 bg-slate-50 dark:bg-slate-900/80 rounded-xl border border-slate-200/80 dark:border-slate-800 w-fit max-w-full">
+                    <div
+                      className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 font-extrabold text-[11px] text-white ${
+                        result.lampiran.tipe === "PDF"
+                          ? "bg-red-500"
+                          : "bg-blue-600"
+                      }`}
+                    >
+                      {result.lampiran.tipe === "PDF" ? "PDF" : "IMG"}
+                    </div>
+                    <div className="truncate">
+                      <p className="text-xs font-bold text-slate-800 dark:text-slate-200 truncate">
+                        Lampiran: {result.lampiran.nama}
+                      </p>
+                      <p className="text-[10px] text-slate-500 dark:text-slate-400">
+                        {result.lampiran.tipe} • {result.lampiran.ukuran}
+                      </p>
+                    </div>
+                  </div>
+                )}
               </div>
 
               {/* Timeline Status */}

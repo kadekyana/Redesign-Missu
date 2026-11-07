@@ -346,6 +346,33 @@ export default function HistoryPage() {
                 <p className="text-slate-600 dark:text-slate-300 leading-relaxed text-sm bg-slate-50 dark:bg-slate-800/40 p-4 rounded-xl border border-slate-200 dark:border-slate-800">
                   {detailTicket.deskripsi}
                 </p>
+
+                {detailTicket.lampiran && (
+                  <div className="mt-3">
+                    <h5 className="text-slate-900 dark:text-white font-bold text-xs mb-1.5">
+                      Lampiran Berkas:
+                    </h5>
+                    <div className="flex items-center gap-3 p-3 bg-slate-50 dark:bg-slate-800/60 rounded-xl border border-slate-200/80 dark:border-slate-700 w-fit max-w-full">
+                      <div
+                        className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 font-extrabold text-[11px] text-white ${
+                          detailTicket.lampiran.tipe === "PDF"
+                            ? "bg-red-500"
+                            : "bg-blue-600"
+                        }`}
+                      >
+                        {detailTicket.lampiran.tipe === "PDF" ? "PDF" : "IMG"}
+                      </div>
+                      <div className="truncate">
+                        <p className="text-xs font-bold text-slate-800 dark:text-slate-200 truncate">
+                          {detailTicket.lampiran.nama}
+                        </p>
+                        <p className="text-[10px] text-slate-500 dark:text-slate-400">
+                          {detailTicket.lampiran.tipe} • {detailTicket.lampiran.ukuran}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>
